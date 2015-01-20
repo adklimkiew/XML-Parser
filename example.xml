@@ -1,0 +1,12 @@
+<top>
+  <node>  
+    <subnode>Tutaj</subnode>
+    <subnode>Kolejna linia
+      <tralala>The XX</tralala>
+      <tralala>The Knife</tralala>
+    </subnode>
+    <subnode>
+      I jeszcze jedna<INNER>Ha-Ha</INNER>
+    </subnode>
+  </node>
+</top>
