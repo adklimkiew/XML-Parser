@@ -1,28 +1,11 @@
 #include "Parser.hpp"
+#include "Result.hpp"
 
 #include <iostream>
 
 Parser::Parser(const std::string& filename)
-: _filename(filename)
 {
   _fstream.open(filename, std::fstream::in); 
-}
-
-bool Parser::parse()
-{
-  std::string line;
-  while( std::getline(_fstream, line))
-  {
-    std::cout << line << std::endl;
-    size_t start = line.find_first_not_of(' ');
-    size_t end = line.find_last_not_of(' ');
-    std::string res = line.substr(start, end-start+1);
-    if(!evaluate(res))
-    {
-       std::cout << "XML INVALID!" << std::endl;
-       return false;
-    }
-  } 
 }
 
 Parser::~Parser()
@@ -30,11 +13,33 @@ Parser::~Parser()
   _fstream.close(); 
 }
 
-bool Parser::evaluate(std::string& str)
+bool Parser::parse(Result* result)
+{
+  std::string line;
+  while( std::getline(_fstream, line))
+  {
+    std::cout << line << std::endl;
+    std::string str = trim(line);
+    if(!evaluate(str, result))
+    {
+      std::cout << "XML INVALID!" << std::endl;
+      return false;
+    }
+  } 
+}
+
+std::string Parser::trim(const std::string& str)
+{
+  size_t start = str.find_first_not_of(' ');
+  size_t end = str.find_last_not_of(' ');
+  return str.substr(start, end-start+1);
+}
+
+bool Parser::evaluate(std::string& str, Result* result)
 {
   if (str.empty())
     return true;
-      
+    
   std::string res;
   switch(getNextToken(str, res))
   {
@@ -43,7 +48,7 @@ bool Parser::evaluate(std::string& str)
       std::cout << "pushed " << _stack.top() << "("<< res << ")" << std::endl;
       break;
     case CONTENTS:
-        
+      result->add(res,_stack.top());  
       break;
     case CLOSING_ELEMENT:
       std::string& top = _stack.top();
@@ -54,7 +59,7 @@ bool Parser::evaluate(std::string& str)
       _stack.pop();
       break;
   }
-  return evaluate(str);
+  return evaluate(str, result);
 }
 
 Parser::TOKEN Parser::getNextToken(std::string& input, std::string& result)

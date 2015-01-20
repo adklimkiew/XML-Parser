@@ -8,5 +8,9 @@
     <subnode>
       I jeszcze jedna<INNER>Ha-Ha</INNER>
     </subnode>
+    <subnode>Zawiera zagniedzone elementy
+      <nested>pierwszy</nested>
+      <nested2>drugi</nested2>
+    </subnode>
   </node>
 </top>
