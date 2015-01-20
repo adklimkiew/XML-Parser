@@ -48,7 +48,7 @@ bool Parser::evaluate(std::string& str, Result* result)
       std::cout << "pushed " << _stack.top() << "("<< res << ")" << std::endl;
       break;
     case CONTENTS:
-      result->add(res,_stack.top());  
+      result->add(new Data(res, _stack.top()));  
       break;
     case CLOSING_ELEMENT:
       std::string& top = _stack.top();
