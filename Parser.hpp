@@ -18,10 +18,10 @@ public:
 private:
   enum TOKEN {OPENING_ELEMENT, CLOSING_ELEMENT, CONTENTS};
   
-  bool evaluate(std::string& str, Result* result);
+  bool evaluate(const std::string& str, size_t& start, Result* result);
   std::string trim(const std::string& str);
 
-  TOKEN getNextToken(std::string& input, std::string& result);
+  TOKEN getNextToken(const std::string& input, size_t& start, std::string& result);
   
 private:
   std::fstream _fstream;

@@ -5,7 +5,7 @@
 
 Parser::Parser(const std::string& filename)
 {
-  _fstream.open(filename, std::fstream::in); 
+  _fstream.open(filename.c_str(), std::fstream::in); 
 }
 
 Parser::~Parser()
@@ -16,85 +16,100 @@ Parser::~Parser()
 bool Parser::parse(Result* result)
 {
   std::string line;
-  while( std::getline(_fstream, line))
+  while(std::getline(_fstream, line))
   {
-    std::cout << line << std::endl;
+    std::cout << "|" << line << "|" << std::endl;
     std::string str = trim(line);
-    if(!evaluate(str, result))
+    printf("trimmed line:%s<--\n", str.c_str());
+    size_t start = 0;
+    if(!evaluate(str, start, result))
     {
       std::cout << "XML INVALID!" << std::endl;
       return false;
     }
-  } 
+  }
+  return true;
 }
 
 std::string Parser::trim(const std::string& str)
 {
   size_t start = str.find_first_not_of(' ');
   size_t end = str.find_last_not_of(' ');
-  return str.substr(start, end-start+1);
+std::cout << "trim:" << start << " " << end << std::endl;
+  if (end == std::string::npos)
+    end = str.length() - 1;
+  return str.substr(start, end-start);
 }
 
-bool Parser::evaluate(std::string& str, Result* result)
+bool Parser::evaluate(const std::string& str, size_t& start, Result* result)
 {
-  if (str.empty())
+  if (start == str.length())
     return true;
     
-  std::string res;
-  switch(getNextToken(str, res))
+  std::string nextToken;
+  switch(getNextToken(str, start, nextToken))
   {
     case OPENING_ELEMENT:
-      _stack.push(res);
-      std::cout << "pushed " << _stack.top() << "("<< res << ")" << std::endl;
+      _stack.push(nextToken);
+      std::cout << "pushed " << _stack.top() << "("<< nextToken << ")" << std::endl;
       break;
     case CONTENTS:
-      result->add(new Data(res, _stack.top()));  
+      std::cout << "contents: " << nextToken << std::endl;
+      result->add(new Data(nextToken, _stack.top()));  
       break;
     case CLOSING_ELEMENT:
       std::string& top = _stack.top();
-      if(top != res){
-        std::cout << "res:" << res << " top:" << top << std::endl;
+      if(top != nextToken){
+        std::cout << "nextToken:" << nextToken << " top:" << top << std::endl;
         return false;
       }
       _stack.pop();
       break;
   }
-  return evaluate(str, result);
+  return evaluate(str, start, result);
 }
 
-Parser::TOKEN Parser::getNextToken(std::string& input, std::string& result)
+Parser::TOKEN Parser::getNextToken(const std::string& input, size_t& start, std::string& result)
 {
-  if (input[0] == '<' && input[1] != '/')
+  std::cout << input << "---" << input.length() << " " << start << std::endl;
+  if (input[start] == '<' && input[start+1] != '/')
   {
     size_t pos = input.find_first_of('>');
     std::cout << pos << std::endl;
-    result = input.substr(1, pos-1);
+    result = input.substr(start+1, pos-1);
     std::cout << result << std::endl;
-    if (pos+1 == input.length())
-      input = "";
-    else
-      input = input.substr(pos+1, input.length()-pos);
+    start = pos+1;
+
+ //   else
+ //     start = input.length()-pos;
+     // input = input.substr(pos+1, input.length()-pos);
     return OPENING_ELEMENT;
   }
-  else if (input[0] != '<')
+  else if (input[start] != '<')
   {
-    size_t pos = input.find_first_of('<');
+    size_t pos = input.find_first_of('<', start);
     if (pos == std::string::npos) {
-      result = input;
-      input = "";
+      result = input.substr(start, pos-start+1);
+      start = input.length();
+     // input = "";
     }
     else {
-      result = input.substr(0, pos);
-      std::cout << result << std::endl;
-      input = input.substr(pos, input.length()-pos);
+      result = input.substr(start, pos-start);
+       std::cout << pos << " " << result << std::endl;
+      start = pos;
+    //  input = input.substr(pos, input.length()-pos);
     }
     return CONTENTS;   
   }
   else
   {
-    size_t pos = input.find_first_of('>', 2);
-    result = input.substr(2, pos-2);
-    input = input.substr(pos+1, input.length()-pos);
+    size_t pos = input.find_first_of('>', start+2);
+    result = input.substr(start+2, pos-1-start-1);
+    if (pos == input.length()-1)
+      start = input.length();
+    else
+      start = input.length()-pos;
+  //  input = input.substr(pos+1, input.length()-pos);
     std::cout << result << std::endl;
     return CLOSING_ELEMENT;
   }
