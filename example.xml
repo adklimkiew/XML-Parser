@@ -1,5 +1,5 @@
 <top>
-  <node>  
+  <node>
     <subnode>Tutaj</subnode>
     <subnode>Kolejna linia
       <tralala>The XX</tralala>
@@ -11,6 +11,7 @@
     <subnode>Zawiera zagniedzone elementy
       <nested>pierwszy</nested>
       <nested2>drugi</nested2>
-    </subnode>
+      <EMPTY-ELEMENT/>
+    </subnode><ojej>Tu cos jest...</ojej>
   </node>
 </top>

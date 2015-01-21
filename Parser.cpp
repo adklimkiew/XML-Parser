@@ -58,12 +58,14 @@ bool Parser::evaluate(const std::string& str, size_t& start, Result* result)
       result->add(new Data(nextToken, _stack.top()));  
       break;
     case CLOSING_ELEMENT:
-      std::string& top = _stack.top();
-      if(top != nextToken){
-        std::cout << "nextToken:" << nextToken << " top:" << top << std::endl;
+      if(_stack.top() != nextToken){
+        std::cout << "nextToken:" << nextToken << " top:" << _stack.top() << std::endl;
         return false;
       }
       _stack.pop();
+      break;
+    case EMPTY_ELEMENT:
+      
       break;
   }
   return evaluate(str, start, result);
@@ -74,15 +76,17 @@ Parser::TOKEN Parser::getNextToken(const std::string& input, size_t& start, std:
   std::cout << input << "---" << input.length() << " " << start << std::endl;
   if (input[start] == '<' && input[start+1] != '/')
   {
-    size_t pos = input.find_first_of('>');
+    size_t pos = input.find_first_of('>', start);
     std::cout << pos << std::endl;
-    result = input.substr(start+1, pos-1);
+    if (input[pos-1] == '/')
+    {
+      result = input.substr(start+1, pos-2);
+      start = pos+1;
+      return EMPTY_ELEMENT;
+    }
+    result = input.substr(start+1, pos-start-1);
     std::cout << result << std::endl;
     start = pos+1;
-
- //   else
- //     start = input.length()-pos;
-     // input = input.substr(pos+1, input.length()-pos);
     return OPENING_ELEMENT;
   }
   else if (input[start] != '<')
@@ -91,13 +95,11 @@ Parser::TOKEN Parser::getNextToken(const std::string& input, size_t& start, std:
     if (pos == std::string::npos) {
       result = input.substr(start, pos-start+1);
       start = input.length();
-     // input = "";
     }
     else {
       result = input.substr(start, pos-start);
-       std::cout << pos << " " << result << std::endl;
+      std::cout << pos << "[" << input[pos] << "]" << result << std::endl;
       start = pos;
-    //  input = input.substr(pos, input.length()-pos);
     }
     return CONTENTS;   
   }
@@ -108,8 +110,7 @@ Parser::TOKEN Parser::getNextToken(const std::string& input, size_t& start, std:
     if (pos == input.length()-1)
       start = input.length();
     else
-      start = input.length()-pos;
-  //  input = input.substr(pos+1, input.length()-pos);
+      start = pos+1;
     std::cout << result << std::endl;
     return CLOSING_ELEMENT;
   }
