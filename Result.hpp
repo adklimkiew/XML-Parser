@@ -13,11 +13,7 @@ public:
     _results.push_back(data);
   }
 
-  void print() const
-  {
-    for (size_t i=0; i<_results.size(); ++i)
-      _results[i]->print();
-  }
+  void print() const;
 
 private:
   std::vector<Data*> _results;

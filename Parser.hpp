@@ -4,8 +4,10 @@
 #include <fstream>
 #include <stack>
 #include <string>
+#include <vector>
 
 class Result;
+class Attribute;
 
 class Parser
 {
@@ -22,7 +24,9 @@ private:
   std::string trim(const std::string& str);
 
   TOKEN getNextToken(const std::string& input, size_t& start, std::string& result);
-  
+
+  bool extractAttributes(std::string const& input, std::string& element, std::vector<Attribute*>& results); 
+  bool extractAttribute(std::string const& input, size_t& pos, std::vector<Attribute*>& results);
 private:
   std::fstream _fstream;
   std::stack<std::string> _stack;

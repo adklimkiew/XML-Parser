@@ -11,7 +11,7 @@
     <subnode>Zawiera zagniedzone elementy
       <nested>pierwszy</nested>
       <nested2>drugi</nested2>
-      <EMPTY-ELEMENT/>
+      <EMPTY-ELEMENT colour ="RED" shape="circle" contrast= "low"/>
     </subnode><ojej>Tu cos jest...</ojej>
   </node>
 </top>

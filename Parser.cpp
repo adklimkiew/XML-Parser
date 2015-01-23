@@ -1,5 +1,6 @@
 #include "Parser.hpp"
 #include "Result.hpp"
+#include "Attribute.hpp"
 
 #include <iostream>
 
@@ -55,7 +56,7 @@ bool Parser::evaluate(const std::string& str, size_t& start, Result* result)
       break;
     case CONTENTS:
       std::cout << "contents: " << nextToken << std::endl;
-      result->add(new Data(nextToken, _stack.top()));  
+      result->add(new Data(_stack.top(), nextToken));  
       break;
     case CLOSING_ELEMENT:
       if(_stack.top() != nextToken){
@@ -65,7 +66,14 @@ bool Parser::evaluate(const std::string& str, size_t& start, Result* result)
       _stack.pop();
       break;
     case EMPTY_ELEMENT:
-      
+      std::cout << "Empty element: " << nextToken << std::endl;
+      std::string element;
+      std::vector<Attribute*> attributes;
+      if(!extractAttributes(nextToken, element, attributes))
+        return false;
+      for (size_t i=0;i<attributes.size();++i)
+        std::cout << "\tAttrib: " << attributes[i]->name() << " Value: " << attributes[i]->value() << std::endl;
+      result->add(new Data(element, attributes));
       break;
   }
   return evaluate(str, start, result);
@@ -80,7 +88,7 @@ Parser::TOKEN Parser::getNextToken(const std::string& input, size_t& start, std:
     std::cout << pos << std::endl;
     if (input[pos-1] == '/')
     {
-      result = input.substr(start+1, pos-2);
+      result = input.substr(start+1, pos-start-2);
       start = pos+1;
       return EMPTY_ELEMENT;
     }
@@ -114,4 +122,59 @@ Parser::TOKEN Parser::getNextToken(const std::string& input, size_t& start, std:
     std::cout << result << std::endl;
     return CLOSING_ELEMENT;
   }
+}
+
+bool Parser::extractAttributes(std::string const& input, std::string& element,
+  std::vector<Attribute*>& results)
+{
+  size_t pos = input.find_first_of(" /");
+  element = input.substr(0, pos);
+
+  while (pos != std::string::npos)
+  {
+    pos = input.find_first_of('=', pos);
+    if (pos == std::string::npos)
+      return true;
+
+    if(!extractAttribute(input, pos, results))
+      return false;
+  }
+  return true;
+}
+
+bool Parser::extractAttribute(std::string const& input, size_t& pos,
+  std::vector<Attribute*>& results)
+{
+  size_t index = pos-1;
+  std::cout << pos << " " << input[pos] << std::endl;
+  while(input[index] == ' ')
+    --index;
+  size_t end = index;
+
+  while(input[index] != ' ')
+    --index;
+  std::string attrName = input.substr(index+1, end-index);
+
+  std::cout << attrName << " " << index << ", " << end << std::endl;
+
+  index = pos+1;
+  while(input[index] == ' ')
+    ++index;
+
+  if (input[index] != '\"')
+    return false;
+  
+  end = index+1;
+  while(input[end] != '\"')
+    ++end;
+
+  std::string attrValue = input.substr(index+1, end-index-1);
+
+  std::cout << attrValue << " " << index << ", " << end << std::endl;
+
+  pos = end+1;
+
+  results.push_back(new Attribute(attrName, attrValue));
+
+  return true;
 }
