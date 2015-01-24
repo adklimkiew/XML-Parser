@@ -1,6 +1,6 @@
 <top>
   <node>
-    <subnode>Tutaj</subnode>
+    <subnode attr="secret" type="M">Tutaj</subnode>
     <subnode>Kolejna linia
       <tralala>The XX</tralala>
       <tralala>The Knife</tralala>
@@ -11,7 +11,8 @@
     <subnode>Zawiera zagniedzone elementy
       <nested>pierwszy</nested>
       <nested2>drugi</nested2>
-      <EMPTY-ELEMENT colour ="RED" shape="circle" contrast= "low"/>
+      <EMPTY-ELEMENT-WITH-ATTRS colour ="RED" shape="circle" contrast= "low"/>
+      <EMPTY-ELEMENT-NO-ATTRS />
     </subnode><ojej>Tu cos jest...</ojej>
   </node>
 </top>

@@ -51,9 +51,17 @@ bool Parser::evaluate(const std::string& str, size_t& start, Result* result)
   switch(getNextToken(str, start, nextToken))
   {
     case OPENING_ELEMENT:
-      _stack.push(nextToken);
+    {
+      std::string element;
+      std::vector<Attribute*> attributes;
+      if(!extractAttributes(nextToken, element, attributes))
+        return false;
+      if (attributes.size() > 0)
+        result->add(new Data(element, attributes));
+      _stack.push(element);
       std::cout << "pushed " << _stack.top() << "("<< nextToken << ")" << std::endl;
       break;
+    }
     case CONTENTS:
       std::cout << "contents: " << nextToken << std::endl;
       result->add(new Data(_stack.top(), nextToken));  
@@ -71,8 +79,6 @@ bool Parser::evaluate(const std::string& str, size_t& start, Result* result)
       std::vector<Attribute*> attributes;
       if(!extractAttributes(nextToken, element, attributes))
         return false;
-      for (size_t i=0;i<attributes.size();++i)
-        std::cout << "\tAttrib: " << attributes[i]->name() << " Value: " << attributes[i]->value() << std::endl;
       result->add(new Data(element, attributes));
       break;
   }

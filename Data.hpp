@@ -23,7 +23,10 @@ public:
 
   void print() {
     std::cout << _element << ": ";
-    std::cout << _contents << std::endl;
+    if (!_contents.empty())
+      std::cout << _contents << std::endl;
+    else
+      std::cout << std::endl;
     for (size_t i=0; i<_attributes.size(); ++i)
       std::cout << "\t" << _attributes[i]->name() << ": " << _attributes[i]->value() << std::endl;
   }
