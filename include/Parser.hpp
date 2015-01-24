@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-class Result;
+class IResult;
 class Attribute;
 
 class Parser
@@ -15,12 +15,12 @@ public:
   Parser(const std::string& filename);
   ~Parser();
 
-  bool parse(Result* result);
+  bool parse(IResult* result);
 
 private:
   enum TOKEN {OPENING_ELEMENT, CLOSING_ELEMENT, CONTENTS, EMPTY_ELEMENT};
   
-  bool evaluate(const std::string& str, size_t& start, Result* result);
+  bool evaluate(const std::string& str, size_t& start, IResult* result);
   std::string trim(const std::string& str);
 
   TOKEN getNextToken(const std::string& input, size_t& start, std::string& result);

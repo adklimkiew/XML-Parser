@@ -20,7 +20,14 @@ public:
     std::copy(attributes.begin(), attributes.end(), std::back_inserter(_attributes));
   }
 
-  void print() {
+  ~Data() {
+    for (size_t i=0; i<_attributes.size(); ++i)
+      delete _attributes[i];
+  }
+
+  void update(const std::string& contents) { _contents = contents; }
+ 
+  void print() const {
     std::cout << _element << ": ";
     if (!_contents.empty())
       std::cout << _contents << std::endl;

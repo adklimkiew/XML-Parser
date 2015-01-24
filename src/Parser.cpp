@@ -1,6 +1,7 @@
 #include "Parser.hpp"
-#include "Result.hpp"
+#include "IResult.hpp"
 #include "Attribute.hpp"
+#include "Data.hpp"
 
 #include <iostream>
 
@@ -14,7 +15,7 @@ Parser::~Parser()
   _fstream.close(); 
 }
 
-bool Parser::parse(Result* result)
+bool Parser::parse(IResult* result)
 {
   std::string line;
   while(std::getline(_fstream, line))
@@ -42,7 +43,7 @@ std::cout << "trim:" << start << " " << end << std::endl;
   return str.substr(start, end-start);
 }
 
-bool Parser::evaluate(const std::string& str, size_t& start, Result* result)
+bool Parser::evaluate(const std::string& str, size_t& start, IResult* result)
 {
   if (start == str.length())
     return true;
@@ -64,7 +65,8 @@ bool Parser::evaluate(const std::string& str, size_t& start, Result* result)
     }
     case CONTENTS:
       std::cout << "contents: " << nextToken << std::endl;
-      result->add(new Data(_stack.top(), nextToken));  
+      result->add(new Data(_stack.top(), nextToken));
+    //  result->getLast()->update(nextToken);
       break;
     case CLOSING_ELEMENT:
       if(_stack.top() != nextToken){
