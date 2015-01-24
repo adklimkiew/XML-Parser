@@ -3,7 +3,7 @@
 
 int main()
 {
-  Parser p("example.xml");
+  Parser p("../xml_files/example.xml");
   Result r;
   p.parse(&r);
   
