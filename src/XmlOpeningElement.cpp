@@ -5,7 +5,7 @@
 #include <string>
 #include <iostream>
 
-bool XmlOpeningElement::interpret(XmlLine* xmlLine)
+TagInterpreter::RESULT XmlOpeningElement::interpret(XmlLine* xmlLine)
 {
   const std::string& input = xmlLine->input();
   size_t start = xmlLine->getCurrIndex();
@@ -16,16 +16,16 @@ bool XmlOpeningElement::interpret(XmlLine* xmlLine)
     size_t pos = input.find_first_of('>', start);
     std::cout << pos << std::endl;
     if (input[pos-1] == '/')
-      return false;
+      return TagInterpreter::IGNORED;
 
     std::string tag;
     if (!extractAttributes(xmlLine, tag))
-      return false;
+      return TagInterpreter::ERROR;
 
     validation()->push(tag);
 
     xmlLine->setCurrIndex(pos+1);
-    return true;
+    return TagInterpreter::SUCCESS;
   }
-  return false;
+  return TagInterpreter::IGNORED;
 }

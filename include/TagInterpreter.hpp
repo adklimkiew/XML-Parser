@@ -17,7 +17,9 @@ public:
 
   virtual ~TagInterpreter() {}
 
-  virtual bool interpret(XmlLine* xmlLine) = 0;
+  enum RESULT {SUCCESS, IGNORED, ERROR};
+
+  virtual RESULT interpret(XmlLine* xmlLine) = 0;
 
 protected:
   IResult* result() { return _result; }

@@ -7,7 +7,7 @@ class XmlElementContents : public TagInterpreter
 {
 public:
   XmlElementContents(IResult* result, XmlValidation* validation) : TagInterpreter(result, validation) {}
-  bool interpret(XmlLine* xmlLine);
+  RESULT interpret(XmlLine* xmlLine);
 };
 
 #endif

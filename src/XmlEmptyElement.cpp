@@ -5,7 +5,7 @@
 #include <string>
 #include <iostream>
 
-bool XmlEmptyElement::interpret(XmlLine* xmlLine)
+TagInterpreter::RESULT XmlEmptyElement::interpret(XmlLine* xmlLine)
 {
   const std::string& input = xmlLine->input();
   size_t start = xmlLine->getCurrIndex();
@@ -16,16 +16,16 @@ bool XmlEmptyElement::interpret(XmlLine* xmlLine)
     size_t pos = input.find_first_of('>', start);
     std::cout << pos << std::endl;
     if (input[pos-1] != '/') // this is not empty element...
-      return false;
+      return TagInterpreter::IGNORED;
 
     std::string tag; // <- not needed in fact... - tbd
     if(!extractAttributes(xmlLine, tag))
-      return false;
+      return TagInterpreter::ERROR;
 
     std::cout << "interpret extracted tag: " << tag << std::endl;
 
     xmlLine->setCurrIndex(pos+1);
-    return true;
+    return TagInterpreter::SUCCESS;
   }
-  return false;
+  return TagInterpreter::IGNORED;
 }

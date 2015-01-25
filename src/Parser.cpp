@@ -43,10 +43,10 @@ bool Parser::parse(IResult* result)
     {
       for(size_t i=0; i<interpreters.size(); ++i)
       {
-        if (!interpreters[i]->interpret(xmlLine))
+        if (interpreters[i]->interpret(xmlLine) == TagInterpreter::ERROR)
         {
-    //      std::cout << "XML INVALID!" << std::endl;
-    //      return false;
+          std::cout << "XML INVALID!" << std::endl;
+          return false;
         }
         start = xmlLine->getCurrIndex();
       }

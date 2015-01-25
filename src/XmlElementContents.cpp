@@ -7,13 +7,13 @@
 #include <string>
 #include <iostream>
 
-bool XmlElementContents::interpret(XmlLine* xmlLine)
+TagInterpreter::RESULT XmlElementContents::interpret(XmlLine* xmlLine)
 {
   const std::string& input = xmlLine->input();
   size_t start = xmlLine->getCurrIndex();
 
   if (input[start] == '<')
-    return false;
+    return TagInterpreter::IGNORED;
 
   size_t index = 0;
   size_t end = 0;
@@ -35,5 +35,5 @@ bool XmlElementContents::interpret(XmlLine* xmlLine)
   std::cout << "interpret contents:" << contents << "|" << std::endl;
 
   xmlLine->setCurrIndex(index);
-  return true;
+  return TagInterpreter::SUCCESS;
 }

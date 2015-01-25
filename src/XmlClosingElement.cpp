@@ -5,7 +5,7 @@
 #include <string>
 #include <iostream>
 
-bool XmlClosingElement::interpret(XmlLine* xmlLine)
+TagInterpreter::RESULT XmlClosingElement::interpret(XmlLine* xmlLine)
 {
   const std::string& input = xmlLine->input();
   size_t start = xmlLine->getCurrIndex();
@@ -26,13 +26,13 @@ bool XmlClosingElement::interpret(XmlLine* xmlLine)
     if (!validation()->validate(tag))
     {
       std::cout << "XmlClosingElement::interpret validation failed tag :" << tag << " onTop:" << validation()->top() << std::endl;
-      return false;
+      return TagInterpreter::ERROR;
     }
     
     validation()->pop();
 
     xmlLine->setCurrIndex(pos+1);
-    return true;
+    return TagInterpreter::SUCCESS;
   }
-  return false;
+  return TagInterpreter::IGNORED;
 }

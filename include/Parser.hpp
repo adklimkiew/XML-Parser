@@ -20,9 +20,6 @@ public:
   bool parse(IResult* result);
 
 private:
-  enum TOKEN {OPENING_ELEMENT, CLOSING_ELEMENT, CONTENTS, EMPTY_ELEMENT};
-  
-  bool evaluate(const std::string& str, size_t& start, IResult* result);
   std::string trim(const std::string& str);
 
 private:

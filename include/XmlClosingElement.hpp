@@ -7,7 +7,7 @@ class XmlClosingElement : public TagInterpreter
 {
 public:
   XmlClosingElement(IResult* result, XmlValidation* validation) : TagInterpreter(result, validation) {}
-  bool interpret(XmlLine* xmlLine);
+  RESULT interpret(XmlLine* xmlLine);
 };
 
 #endif

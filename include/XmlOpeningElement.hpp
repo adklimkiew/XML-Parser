@@ -7,7 +7,7 @@ class XmlOpeningElement : public TagInterpreter
 {
 public:
   XmlOpeningElement(IResult* result, XmlValidation* validation) : TagInterpreter(result, validation) {}
-  bool interpret(XmlLine* xmlLine);
+  TagInterpreter::RESULT interpret(XmlLine* xmlLine);
 };
 
 #endif

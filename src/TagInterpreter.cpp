@@ -38,7 +38,6 @@ bool TagInterpreter::extractAttributes(const XmlLine* xmlLine, std::string& tag)
 
 bool TagInterpreter::extractAttribute(const std::string& input, size_t& pos, std::vector<Attribute*>& results)
 {
-
   size_t index = pos-1;
   std::cout << pos << " " << input[pos] << std::endl;
   while(input[index] == ' ')
