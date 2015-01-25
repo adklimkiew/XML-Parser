@@ -23,7 +23,7 @@ bool XmlClosingElement::interpret(XmlLine* xmlLine)
       start = pos+1;
     std::cout << "XmlClosingElement::interpret tag:" << tag << "|" << std::endl;
 
-    if(!validation()->validate(tag))
+    if (!validation()->validate(tag))
     {
       std::cout << "XmlClosingElement::interpret validation failed tag :" << tag << " onTop:" << validation()->top() << std::endl;
       return false;

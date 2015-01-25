@@ -19,7 +19,7 @@ bool XmlOpeningElement::interpret(XmlLine* xmlLine)
       return false;
 
     std::string tag;
-    if(!extractAttributes(xmlLine, tag))
+    if (!extractAttributes(xmlLine, tag))
       return false;
 
     validation()->push(tag);

@@ -26,7 +26,7 @@ bool TagInterpreter::extractAttributes(const XmlLine* xmlLine, std::string& tag)
     if (pos == std::string::npos)
       return true;
 
-    if(!extractAttribute(input, pos, attributes))
+    if (!extractAttribute(input, pos, attributes))
       return false;
   }
 
