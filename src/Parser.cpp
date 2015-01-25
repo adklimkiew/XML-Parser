@@ -2,6 +2,9 @@
 #include "IResult.hpp"
 #include "Attribute.hpp"
 #include "Data.hpp"
+#include "TagInterpreter.hpp"
+#include "XmlClosingElement.hpp"
+#include "XmlLine.hpp"
 
 #include <iostream>
 
@@ -59,22 +62,32 @@ bool Parser::evaluate(const std::string& str, size_t& start, IResult* result)
         return false;
       if (attributes.size() > 0)
         result->add(new Data(element, attributes));
-      _stack.push(element);
-      std::cout << "pushed " << _stack.top() << "("<< nextToken << ")" << std::endl;
+      _validation.push(element);
+      std::cout << "pushed " << nextToken << std::endl;
       break;
     }
     case CONTENTS:
       std::cout << "contents: " << nextToken << std::endl;
-      result->add(new Data(_stack.top(), nextToken));
+      result->add(new Data(_validation.top(), nextToken));
     //  result->getLast()->update(nextToken);
       break;
     case CLOSING_ELEMENT:
-      if(_stack.top() != nextToken){
-        std::cout << "nextToken:" << nextToken << " top:" << _stack.top() << std::endl;
-        return false;
+    {    
+      TagInterpreter* ti = new XmlClosingElement(result, &_validation);
+      std::cout << "CLOSING_EL: nextToken:" << nextToken << " start: " << start << std::endl;
+      XmlLine* line = new XmlLine(nextToken, start);
+      if(!ti->interpret(line)) {
+        std::cout << "nextToken:" << nextToken << " top:" << _validation.top() << std::endl;
+        // memory leak...!
+        return false;        
       }
-      _stack.pop();
+      start = line->getCurrIndex();
+      delete line;
+      delete ti;
+
+      _validation.pop();
       break;
+    }
     case EMPTY_ELEMENT:
       std::cout << "Empty element: " << nextToken << std::endl;
       std::string element;
@@ -121,6 +134,7 @@ Parser::TOKEN Parser::getNextToken(const std::string& input, size_t& start, std:
   }
   else
   {
+/*
     size_t pos = input.find_first_of('>', start+2);
     result = input.substr(start+2, pos-1-start-1);
     if (pos == input.length()-1)
@@ -128,6 +142,8 @@ Parser::TOKEN Parser::getNextToken(const std::string& input, size_t& start, std:
     else
       start = pos+1;
     std::cout << result << std::endl;
+*/
+    result = input; // tmp hack
     return CLOSING_ELEMENT;
   }
 }

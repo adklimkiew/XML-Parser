@@ -1,6 +1,8 @@
 #ifndef PARSER_HPP
 #define PARSER_HPP
 
+#include "XmlValidation.hpp"
+
 #include <fstream>
 #include <stack>
 #include <string>
@@ -29,7 +31,7 @@ private:
   bool extractAttribute(std::string const& input, size_t& pos, std::vector<Attribute*>& results);
 private:
   std::fstream _fstream;
-  std::stack<std::string> _stack;
+  XmlValidation _validation;
 };
 
 #endif

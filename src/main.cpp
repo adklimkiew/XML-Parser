@@ -10,11 +10,13 @@ int main()
   r->print();
   delete r;
   
+/*
   Parser p2("../xml_files/example.xml");
   r = new ParseTreeResult;
   p2.parse(r);
   r->print();
   delete r;
+*/
 
   return 0;
 }

@@ -58,9 +58,9 @@ private:
   void print(const Node* node) {
     if (node == 0)
       return;
+    node->data()->print();
     for (size_t i=0; i<node->children().size(); ++i)
       print(node->children()[i]);
-    node->data()->print();
   }
 
 private:

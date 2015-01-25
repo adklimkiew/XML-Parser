@@ -4,11 +4,11 @@ CFLAGS = -I$(IDIR) -c -Wall
 LDFLAGS =
 ODIR = obj
 
-SOURCES = main.cpp Parser.cpp VResult.cpp
+SOURCES = main.cpp Parser.cpp VResult.cpp TagInterpreter.cpp XmlOpeningElement.cpp XmlClosingElement.cpp 
 _OBJECTS = $(SOURCES:.cpp=.o)
 OBJECTS = $(patsubst %,$(ODIR)/%,$(_OBJECTS))
 
-_DEPS = IResult.hpp VResult.hpp Data.hpp Attribute.hpp Parser.hpp ParseTree.hpp ParseTreeResult.hpp
+_DEPS = IResult.hpp VResult.hpp Data.hpp Attribute.hpp Parser.hpp ParseTree.hpp ParseTreeResult.hpp XmlOpeningElement.hpp
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
 EXECUTABLE = main
