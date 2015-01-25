@@ -10,7 +10,7 @@
     <subnode>
       I jeszcze jedna<INNER>Ha-Ha</INNER>
     </subnode>
-    <subnode>Zawiera zagniedzone elementy
+    <subnode>Zawiera zagniezdzone elementy
       <nested>pierwszy</nested>
       <nested2>drugi</nested2>
       <EMPTY-ELEMENT-WITH-ATTRS colour ="RED" shape="circle" contrast= "low"/>

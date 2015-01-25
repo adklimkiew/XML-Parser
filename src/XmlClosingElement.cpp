@@ -21,13 +21,15 @@ bool XmlClosingElement::interpret(XmlLine* xmlLine)
       start = input.length();
     else
       start = pos+1;
-    std::cout << "interpret:" << tag << std::endl;
+    std::cout << "XmlClosingElement::interpret tag:" << tag << "|" << std::endl;
 
     if(!validation()->validate(tag))
     {
-      std::cout << "nextToken:" << tag << " top:" << validation()->top() << std::endl;
+      std::cout << "XmlClosingElement::interpret validation failed tag :" << tag << " onTop:" << validation()->top() << std::endl;
       return false;
     }
+    
+    validation()->pop();
 
     xmlLine->setCurrIndex(pos+1);
     return true;

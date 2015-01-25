@@ -3,16 +3,20 @@
 #include "Attribute.hpp"
 #include "IResult.hpp"
 #include "Data.hpp"
+#include "XmlValidation.hpp"
 
 #include <iostream>
 
-bool TagInterpreter::extractAttributes(const XmlLine* xmlLine)
+bool TagInterpreter::extractAttributes(const XmlLine* xmlLine, std::string& tag)
 {
   const std::string& input = xmlLine->input();
- // size_t start = xmlLine->getCurrIndex();
+  size_t start = xmlLine->getCurrIndex();
 
-  size_t pos = input.find_first_of(" /");
-  std::string element = input.substr(0, pos);
+  size_t pos = input.find_first_of(" >", start);
+  std::cout << "extractAttributes: copy range" << start+1 << ", " << pos-start-1<< std::endl;
+  tag = input.substr(start+1, pos-start-1); //0 BUG?
+
+  std::cout << "extractAttributes: tag to push:" << tag << "| pos:" << pos << " start:" << start << std::endl;
 
   std::vector<Attribute*> attributes;
 
@@ -27,7 +31,7 @@ bool TagInterpreter::extractAttributes(const XmlLine* xmlLine)
   }
 
   if (attributes.size() > 0)
-    result()->add(new Data(element, attributes));
+    result()->add(new Data(tag, attributes));
 
   return true;
 }

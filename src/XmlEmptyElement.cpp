@@ -1,11 +1,11 @@
-#include "XmlOpeningElement.hpp"
+#include "XmlEmptyElement.hpp"
 #include "XmlValidation.hpp"
 #include "XmlLine.hpp"
 
 #include <string>
 #include <iostream>
 
-bool XmlOpeningElement::interpret(XmlLine* xmlLine)
+bool XmlEmptyElement::interpret(XmlLine* xmlLine)
 {
   const std::string& input = xmlLine->input();
   size_t start = xmlLine->getCurrIndex();
@@ -15,14 +15,14 @@ bool XmlOpeningElement::interpret(XmlLine* xmlLine)
   {
     size_t pos = input.find_first_of('>', start);
     std::cout << pos << std::endl;
-    if (input[pos-1] == '/')
+    if (input[pos-1] != '/') // this is not empty element...
       return false;
 
-    std::string tag;
+    std::string tag; // <- not needed in fact... - tbd
     if(!extractAttributes(xmlLine, tag))
       return false;
 
-    validation()->push(tag);
+    std::cout << "interpret extracted tag: " << tag << std::endl;
 
     xmlLine->setCurrIndex(pos+1);
     return true;

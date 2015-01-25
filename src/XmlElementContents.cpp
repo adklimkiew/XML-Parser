@@ -32,6 +32,7 @@ bool XmlElementContents::interpret(XmlLine* xmlLine)
 
   std::string contents = input.substr(start, end);
   result()->add(new Data(validation()->top(), contents));
+  std::cout << "interpret contents:" << contents << "|" << std::endl;
 
   xmlLine->setCurrIndex(index);
   return true;
