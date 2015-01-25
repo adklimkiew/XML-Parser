@@ -4,6 +4,7 @@
 #include "Data.hpp"
 #include "TagInterpreter.hpp"
 #include "XmlClosingElement.hpp"
+#include "XmlElementContents.hpp"
 #include "XmlLine.hpp"
 
 #include <iostream>
@@ -67,10 +68,22 @@ bool Parser::evaluate(const std::string& str, size_t& start, IResult* result)
       break;
     }
     case CONTENTS:
+    {
       std::cout << "contents: " << nextToken << std::endl;
-      result->add(new Data(_validation.top(), nextToken));
-    //  result->getLast()->update(nextToken);
+      TagInterpreter* ti = new XmlElementContents(result, &_validation);
+      std::cout << "CONTENTS: nextToken:" << nextToken << " start: " << start << std::endl;
+      XmlLine* line = new XmlLine(nextToken, start);
+      if(!ti->interpret(line)) {
+        std::cout << "nextToken:" << nextToken << " top:" << _validation.top() << std::endl;
+        // memory leak...!
+        return false;        
+      }
+      start = line->getCurrIndex();
+      delete line;
+      delete ti;
+
       break;
+    }
     case CLOSING_ELEMENT:
     {    
       TagInterpreter* ti = new XmlClosingElement(result, &_validation);
@@ -120,29 +133,11 @@ Parser::TOKEN Parser::getNextToken(const std::string& input, size_t& start, std:
   }
   else if (input[start] != '<')
   {
-    size_t pos = input.find_first_of('<', start);
-    if (pos == std::string::npos) {
-      result = input.substr(start, pos-start+1);
-      start = input.length();
-    }
-    else {
-      result = input.substr(start, pos-start);
-      std::cout << pos << "[" << input[pos] << "]" << result << std::endl;
-      start = pos;
-    }
-    return CONTENTS;   
+    result = input; // tmp hack
+    return CONTENTS;
   }
   else
   {
-/*
-    size_t pos = input.find_first_of('>', start+2);
-    result = input.substr(start+2, pos-1-start-1);
-    if (pos == input.length()-1)
-      start = input.length();
-    else
-      start = pos+1;
-    std::cout << result << std::endl;
-*/
     result = input; // tmp hack
     return CLOSING_ELEMENT;
   }

@@ -23,7 +23,8 @@ bool XmlClosingElement::interpret(XmlLine* xmlLine)
       start = pos+1;
     std::cout << "interpret:" << tag << std::endl;
 
-    if(!validation()->validate(tag)){
+    if(!validation()->validate(tag))
+    {
       std::cout << "nextToken:" << tag << " top:" << validation()->top() << std::endl;
       return false;
     }
