@@ -49,6 +49,8 @@ bool Parser::parse(IResult* result)
           return false;
         }
         start = xmlLine->getCurrIndex();
+        if (start == str.length())
+          continue;
       }
     } while (start != str.length());
   }

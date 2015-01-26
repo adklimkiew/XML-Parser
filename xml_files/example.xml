@@ -1,5 +1,6 @@
 <top>
   <node>
+    <regular>jakies dane</regular>
     <subnode attr="secret" type="M">Tutaj</subnode>
     <car attr="public" type="TT">Audi
     </car>

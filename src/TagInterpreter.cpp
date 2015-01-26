@@ -14,7 +14,7 @@ bool TagInterpreter::extractAttributes(const XmlLine* xmlLine, std::string& tag)
 
   size_t pos = input.find_first_of(" >", start);
   std::cout << "extractAttributes: copy range" << start+1 << ", " << pos-start-1<< std::endl;
-  tag = input.substr(start+1, pos-start-1); //0 BUG?
+  tag = input.substr(start+1, pos-start-1);
 
   std::cout << "extractAttributes: tag to push:" << tag << "| pos:" << pos << " start:" << start << std::endl;
 
@@ -24,14 +24,16 @@ bool TagInterpreter::extractAttributes(const XmlLine* xmlLine, std::string& tag)
   {
     pos = input.find_first_of('=', pos);
     if (pos == std::string::npos)
-      return true;
+      break;
 
     if (!extractAttribute(input, pos, attributes))
       return false;
   }
 
-  if (attributes.size() > 0)
+//  if (attributes.size() > 0)
     result()->add(new Data(tag, attributes));
+
+  std::cout << "extractAttributes: attributes.size:" << attributes.size() << std::endl;
 
   return true;
 }

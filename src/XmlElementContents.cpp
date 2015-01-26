@@ -31,7 +31,7 @@ TagInterpreter::RESULT XmlElementContents::interpret(XmlLine* xmlLine)
   }
 
   std::string contents = input.substr(start, end);
-  result()->add(new Data(validation()->top(), contents));
+  result()->getLast()->update(contents);
   std::cout << "interpret contents:" << contents << "|" << std::endl;
 
   xmlLine->setCurrIndex(index);
