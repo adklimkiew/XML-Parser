@@ -32,8 +32,9 @@ TagInterpreter::RESULT XmlElementContents::interpret(XmlLine* xmlLine)
 
   std::string contents = input.substr(start, end);
   result()->getLast()->update(contents);
-  std::cout << "interpret contents:" << contents << "|" << std::endl;
 
   xmlLine->setCurrIndex(index);
+  std::cout << "interpret contents:" << contents << "|" << (xmlLine->isAtEnd() ? "end" : "not at end") << std::endl;
+
   return TagInterpreter::SUCCESS;
 }

@@ -6,7 +6,7 @@ ODIR = obj
 
 SOURCES = main.cpp Parser.cpp VResult.cpp TagInterpreter.cpp XmlOpeningElement.cpp XmlClosingElement.cpp XmlElementContents.cpp XmlEmptyElement.cpp
 _OBJECTS = $(SOURCES:.cpp=.o)
-OBJECTS = $(patsubst %,$(ODIR)/%,$(_OBJECTS))
+OBJECTS = $(addprefix $(ODIR)/, $(_OBJECTS))
 
 _DEPS = IResult.hpp VResult.hpp Data.hpp Attribute.hpp Parser.hpp ParseTree.hpp ParseTreeResult.hpp XmlOpeningElement.hpp XmlClosingElement.hpp XmlElementContents.hpp XmlEmptyElement.hpp
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
@@ -15,9 +15,12 @@ EXECUTABLE = main
 
 all: $(SOURCES) $(EXECUTABLE)
 
-$(EXECUTABLE): $(OBJECTS) $(DEPS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+$(EXECUTABLE): $(OBJECTS) #$(DEPS)
+	$(CC) $(LDFLAGS) $^ -o $@
 
 $(ODIR)/%.o: %.cpp $(DEPS)
 	$(CC) $(CFLAGS) $< -o $@
 
+.PHONY: clean
+clean:
+	rm main.exe $(OBJECTS)
