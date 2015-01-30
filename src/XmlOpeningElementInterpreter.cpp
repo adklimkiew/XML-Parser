@@ -16,13 +16,14 @@ TagInterpreter::RESULT XmlOpeningElementInterpreter::interpret(XmlLine* xmlLine)
 
   size_t pos = input.find_first_of('>', start);
   if (pos == std::string::npos)
+    return TagInterpreter::IGNORED;
 
   std::cout << pos << std::endl;
   if (input[pos-1] == '/')
     return TagInterpreter::IGNORED;
 
   std::string tag;
-  if (!extractAttributes(xmlLine, tag))
+  if (!extractTagAndAttributes(xmlLine, tag))
     return TagInterpreter::ERROR;
 
   validation()->push(tag);

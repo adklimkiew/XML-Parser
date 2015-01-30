@@ -1,9 +1,11 @@
 <top>
   <node>
-  <hard test="unit" architecture="linux64"/>
+  <hard test="unit"
+    architecture="linux64"
+  />
     <regular>jakies dane</regular>
     <subnode attr="secret" type="M">Tutaj</subnode>
-    <car attr="public" type="TT">Audi
+    <car access="public" model="TT">Audi
     </car>
     <subnode>Kolejna linia
       <tralala>The XX</tralala>

@@ -7,34 +7,41 @@
 
 #include <iostream>
 
-bool TagInterpreter::extractAttributes(const XmlLine* xmlLine, std::string& tag)
+bool TagInterpreter::extractTagAndAttributes(const XmlLine* xmlLine, std::string& tag)
 {
   const std::string& input = xmlLine->input();
   size_t start = xmlLine->getCurrIndex();
 
   size_t pos = input.find_first_of(" >", start);
-  std::cout << "extractAttributes: copy range" << start+1 << ", " << pos-start-1<< std::endl;
+  std::cout << "extractTagAndAttributes: copy range" << start+1 << ", " << pos-start-1<< std::endl;
   tag = input.substr(start+1, pos-start-1);
 
-  std::cout << "extractAttributes: tag to push:" << tag << "| pos:" << pos << " start:" << start << std::endl;
+  std::cout << "extractTagAndAttributes: tag to push:" << tag << "| pos:" << pos << " start:" << start << std::endl;
 
   std::vector<Attribute*> attributes;
 
-  while (pos != std::string::npos)
-  {
-    pos = input.find_first_of('=', pos);
-    if (pos == std::string::npos)
-      break;
-
-    if (!extractAttribute(input, pos, attributes))
-      return false;
-  }
+  if(!TagInterpreter::extractAttributes(input, pos, attributes))
+    return false;
 
 //  if (attributes.size() > 0)
     result()->add(new Data(tag, attributes));
 
   std::cout << "extractAttributes: attributes.size:" << attributes.size() << std::endl;
 
+  return true;
+}
+
+bool TagInterpreter::extractAttributes(const std::string& input, size_t& pos, std::vector<Attribute*>& results)
+{
+  while (pos != std::string::npos)
+  {
+    pos = input.find_first_of('=', pos);
+    if (pos == std::string::npos)
+      break;
+
+    if (!extractAttribute(input, pos, results))
+      return false;
+  }
   return true;
 }
 
@@ -46,11 +53,11 @@ bool TagInterpreter::extractAttribute(const std::string& input, size_t& pos, std
     --index;
   size_t end = index;
 
-  while(input[index] != ' ')
+  while(input[index] != ' ' && index > 0)
     --index;
-  std::string attrName = input.substr(index+1, end-index);
+  std::string attrName = index == 0 ? input.substr(0, end-index+1) : input.substr(index+1, end-index);
 
-  std::cout << attrName << " " << index << ", " << end << std::endl;
+  std::cout << "|" << attrName << "| " << index << ", " << end << std::endl;
 
   index = pos+1;
   while(input[index] == ' ')

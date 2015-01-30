@@ -8,7 +8,8 @@ class MultiLineElement;
 class XmlMultiLineElementInterpreter : public TagInterpreter
 {
 public:
-  XmlMultiLineElementInterpreter(IResult* result, XmlValidation* validation) : TagInterpreter(result, validation) {}
+  XmlMultiLineElementInterpreter(IResult* result, XmlValidation* validation) :
+    TagInterpreter(result, validation), _multiLineElement(NULL) {}
   RESULT interpret(XmlLine* xmlLine);
 
 private:

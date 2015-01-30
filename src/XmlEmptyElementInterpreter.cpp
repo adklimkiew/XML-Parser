@@ -19,7 +19,7 @@ TagInterpreter::RESULT XmlEmptyElementInterpreter::interpret(XmlLine* xmlLine)
       return TagInterpreter::IGNORED;
 
     std::string tag; // <- not needed in fact... - tbd
-    if(!extractAttributes(xmlLine, tag))
+    if(!extractTagAndAttributes(xmlLine, tag))
       return TagInterpreter::ERROR;
 
     std::cout << "interpret extracted tag: " << tag << std::endl;

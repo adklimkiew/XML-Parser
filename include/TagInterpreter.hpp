@@ -25,7 +25,8 @@ protected:
   IResult* result() { return _result; }
   XmlValidation* validation() { return _validation; }
 
-  bool extractAttributes(const XmlLine* xmlLine, std::string& tag);
+  bool extractTagAndAttributes(const XmlLine* xmlLine, std::string& tag);
+  bool extractAttributes(const std::string& input, size_t& pos, std::vector<Attribute*>& results);
   bool extractAttribute(std::string const& input, size_t& pos, std::vector<Attribute*>& results);
 
 private:

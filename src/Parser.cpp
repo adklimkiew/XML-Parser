@@ -7,6 +7,7 @@
 #include "XmlClosingElementInterpreter.hpp"
 #include "XmlElementContentsInterpreter.hpp"
 #include "XmlEmptyElementInterpreter.hpp"
+#include "XmlMultiLineElementInterpreter.hpp"
 #include "XmlLine.hpp"
 
 #include <iostream>
@@ -24,6 +25,7 @@ Parser::~Parser()
 bool Parser::parse(IResult* result)
 {
   std::vector<TagInterpreter*> interpreters;
+  interpreters.push_back(new XmlMultiLineElementInterpreter(result, &_validation));
   interpreters.push_back(new XmlOpeningElementInterpreter(result, &_validation));
   interpreters.push_back(new XmlElementContentsInterpreter(result, &_validation));
   interpreters.push_back(new XmlClosingElementInterpreter(result, &_validation));
