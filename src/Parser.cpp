@@ -3,10 +3,10 @@
 #include "Attribute.hpp"
 #include "Data.hpp"
 #include "TagInterpreter.hpp"
-#include "XmlOpeningElement.hpp"
-#include "XmlClosingElement.hpp"
-#include "XmlElementContents.hpp"
-#include "XmlEmptyElement.hpp"
+#include "XmlOpeningElementInterpreter.hpp"
+#include "XmlClosingElementInterpreter.hpp"
+#include "XmlElementContentsInterpreter.hpp"
+#include "XmlEmptyElementInterpreter.hpp"
 #include "XmlLine.hpp"
 
 #include <iostream>
@@ -24,10 +24,10 @@ Parser::~Parser()
 bool Parser::parse(IResult* result)
 {
   std::vector<TagInterpreter*> interpreters;
-  interpreters.push_back(new XmlOpeningElement(result, &_validation));
-  interpreters.push_back(new XmlElementContents(result, &_validation));
-  interpreters.push_back(new XmlClosingElement(result, &_validation));
-  interpreters.push_back(new XmlEmptyElement(result, &_validation));
+  interpreters.push_back(new XmlOpeningElementInterpreter(result, &_validation));
+  interpreters.push_back(new XmlElementContentsInterpreter(result, &_validation));
+  interpreters.push_back(new XmlClosingElementInterpreter(result, &_validation));
+  interpreters.push_back(new XmlEmptyElementInterpreter(result, &_validation));
 
   std::string line;
   while(std::getline(_fstream, line))
@@ -52,7 +52,7 @@ bool Parser::parse(IResult* result)
         if (xmlLine->isAtEnd())
           break;
       }
-    } while (start != str.length());
+    } while (!xmlLine->isAtEnd());
   }
   return true;
 }

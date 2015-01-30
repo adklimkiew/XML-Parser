@@ -1,5 +1,6 @@
 <top>
   <node>
+  <hard test="unit" architecture="linux64"/>
     <regular>jakies dane</regular>
     <subnode attr="secret" type="M">Tutaj</subnode>
     <car attr="public" type="TT">Audi
@@ -18,5 +19,8 @@
       <EMPTY-ELEMENT-NO-ATTRS />
     </subnode><ojej>Tu cos jest...</ojej>
    <x><x>zadziala?</x></x>
+   <A>
+     tresc
+   </A>
   </node>
 </top>

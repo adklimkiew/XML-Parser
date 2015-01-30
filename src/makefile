@@ -1,15 +1,15 @@
 IDIR = ../include
 CC = g++
-CFLAGS = -I$(IDIR) -c -Wall
+CFLAGS = -I$(IDIR) -c -Wall -Werror
 LDFLAGS =
 ODIR = obj
 
-SOURCES = main.cpp Parser.cpp VResult.cpp TagInterpreter.cpp XmlOpeningElement.cpp XmlClosingElement.cpp XmlElementContents.cpp XmlEmptyElement.cpp
+#SOURCES = main.cpp Parser.cpp VResult.cpp TagInterpreter.cpp XmlOpeningElement.cpp XmlClosingElement.cpp XmlElementContents.cpp XmlEmptyElement.cpp
+SOURCES = $(wildcard *.cpp)
 _OBJECTS = $(SOURCES:.cpp=.o)
 OBJECTS = $(addprefix $(ODIR)/, $(_OBJECTS))
 
-_DEPS = IResult.hpp VResult.hpp Data.hpp Attribute.hpp Parser.hpp ParseTree.hpp ParseTreeResult.hpp XmlOpeningElement.hpp XmlClosingElement.hpp XmlElementContents.hpp XmlEmptyElement.hpp
-DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
+DEPS := $(wildcard $(IDIR)/*.hpp)
 
 EXECUTABLE = main
 
