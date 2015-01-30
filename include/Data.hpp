@@ -10,11 +10,11 @@
 class Data
 {
 public:
-  Data(const std::string& element, const std::string& contents) :
-    _contents(contents), _element(element) {}
+  Data(const std::string& tag, const std::string& contents) :
+    _contents(contents), _tag(tag) {}
   
-  Data(const std::string& element, const std::vector<Attribute*>& attributes) :
-    _element(element)
+  Data(const std::string& tag, const std::vector<Attribute*>& attributes) :
+    _tag(tag)
   {
     _attributes.reserve(attributes.size());
     std::copy(attributes.begin(), attributes.end(), std::back_inserter(_attributes));
@@ -28,7 +28,7 @@ public:
   void update(const std::string& contents) { _contents = contents; }
  
   void print() const {
-    std::cout << _element << ": ";
+    std::cout << _tag << ": ";
     if (!_contents.empty())
       std::cout << _contents << std::endl;
     else
@@ -39,7 +39,7 @@ public:
   
 private:
   std::string _contents;
-  std::string _element;
+  std::string _tag;
   std::vector<Attribute*> _attributes;
 };
 
