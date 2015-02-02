@@ -3,6 +3,9 @@
   <hard test="unit"
     architecture="linux64"
   />
+  <even_harder test="unit"
+    architecture="linux64"
+  >zawartosc</even_harder>
     <regular>jakies dane</regular>
     <subnode attr="secret" type="M">Tutaj</subnode>
     <car access="public" model="TT">Audi

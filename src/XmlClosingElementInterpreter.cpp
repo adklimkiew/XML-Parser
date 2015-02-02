@@ -10,7 +10,7 @@ TagInterpreter::RESULT XmlClosingElementInterpreter::interpret(XmlLine* xmlLine)
   const std::string& input = xmlLine->input();
   size_t start = xmlLine->getCurrIndex();
 
-  std::cout << "interpret: input=" << input << " start:" << start << std::endl;
+  std::cout << "interpret closing element: input=" << input << " start:" << start << std::endl;
   std::cout << input[start] << " " << input[start+1] << std::endl;
 
   if (input[start] == '<' && input[start+1] == '/')

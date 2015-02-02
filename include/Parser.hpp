@@ -10,6 +10,7 @@
 
 class IResult;
 class Attribute;
+class TagInterpreter;
 
 class Parser
 {
@@ -21,6 +22,8 @@ public:
 
 private:
   std::string trim(const std::string& str);
+  void prepareInterpreters(std::vector<TagInterpreter*>& interpreters, IResult* result);
+  void deleteInterpreters(std::vector<TagInterpreter*>& interpreters) const;
 
 private:
   std::fstream _fstream;

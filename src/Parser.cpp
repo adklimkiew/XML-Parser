@@ -3,11 +3,11 @@
 #include "Attribute.hpp"
 #include "Data.hpp"
 #include "TagInterpreter.hpp"
+#include "MultiLineAccumulator.hpp"
 #include "XmlOpeningElementInterpreter.hpp"
 #include "XmlClosingElementInterpreter.hpp"
 #include "XmlElementContentsInterpreter.hpp"
 #include "XmlEmptyElementInterpreter.hpp"
-#include "XmlMultiLineElementInterpreter.hpp"
 #include "XmlLine.hpp"
 
 #include <iostream>
@@ -25,11 +25,9 @@ Parser::~Parser()
 bool Parser::parse(IResult* result)
 {
   std::vector<TagInterpreter*> interpreters;
-  interpreters.push_back(new XmlMultiLineElementInterpreter(result, &_validation));
-  interpreters.push_back(new XmlOpeningElementInterpreter(result, &_validation));
-  interpreters.push_back(new XmlElementContentsInterpreter(result, &_validation));
-  interpreters.push_back(new XmlClosingElementInterpreter(result, &_validation));
-  interpreters.push_back(new XmlEmptyElementInterpreter(result, &_validation));
+  prepareInterpreters(interpreters, result);
+
+  MultiLineAccumulator accumulator;
 
   std::string line;
   while(std::getline(_fstream, line))
@@ -38,23 +36,32 @@ bool Parser::parse(IResult* result)
     std::string str = trim(line);
     printf("trimmed line:%s<--\n", str.c_str());
 
+    accumulator.tryToMerge(str);
+    if (accumulator.isMergeInProgress())
+      continue;
+    if (accumulator.isMergeFinished())
+    {
+      str = accumulator.getMerged();
+      accumulator.reset();
+    }
+
     size_t start = 0;
-    XmlLine* xmlLine = new XmlLine(str, start);
+    XmlLine xmlLine(str, start);
 
     do
     {
       for(size_t i=0; i<interpreters.size(); ++i)
       {
-        if (interpreters[i]->interpret(xmlLine) == TagInterpreter::ERROR)
+        if (interpreters[i]->interpret(&xmlLine) == TagInterpreter::ERROR)
         {
           std::cout << "XML INVALID!" << std::endl;
           return false;
         }
-        start = xmlLine->getCurrIndex();
-        if (xmlLine->isAtEnd())
+        start = xmlLine.getCurrIndex();
+        if (xmlLine.isAtEnd())
           break;
       }
-    } while (!xmlLine->isAtEnd());
+    } while (!xmlLine.isAtEnd());
   }
   return true;
 }
@@ -66,4 +73,18 @@ std::string Parser::trim(const std::string& str)
   if (end == std::string::npos)
     end = str.length() - 1;
   return str.substr(start, end-start);
+}
+
+void Parser::prepareInterpreters(std::vector<TagInterpreter*>& interpreters, IResult* result)
+{
+  interpreters.push_back(new XmlOpeningElementInterpreter(result, &_validation));
+  interpreters.push_back(new XmlElementContentsInterpreter(result, &_validation));
+  interpreters.push_back(new XmlClosingElementInterpreter(result, &_validation));
+  interpreters.push_back(new XmlEmptyElementInterpreter(result, &_validation));
+}
+
+void Parser::deleteInterpreters(std::vector<TagInterpreter*>& interpreters) const
+{
+  for (std::vector<TagInterpreter*>::iterator it = interpreters.begin(); it != interpreters.end(); ++it)
+    delete *it;
 }

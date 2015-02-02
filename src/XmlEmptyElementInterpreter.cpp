@@ -9,7 +9,7 @@ TagInterpreter::RESULT XmlEmptyElementInterpreter::interpret(XmlLine* xmlLine)
 {
   const std::string& input = xmlLine->input();
   size_t start = xmlLine->getCurrIndex();
-  std::cout << "interpret:" << input << "---" << input.length() << " " << start << std::endl;
+  std::cout << "Empty elem interpret:" << input << "---" << input.length() << " " << start << std::endl;
 
   if (input[start] == '<' && input[start+1] != '/')
   {
@@ -22,7 +22,7 @@ TagInterpreter::RESULT XmlEmptyElementInterpreter::interpret(XmlLine* xmlLine)
     if(!extractTagAndAttributes(xmlLine, tag))
       return TagInterpreter::ERROR;
 
-    std::cout << "interpret extracted tag: " << tag << std::endl;
+    std::cout << "Empty elem interpret extracted tag: " << tag << std::endl;
 
     xmlLine->setCurrIndex(pos+1);
     return TagInterpreter::SUCCESS;

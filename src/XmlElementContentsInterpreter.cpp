@@ -12,6 +12,8 @@ TagInterpreter::RESULT XmlElementContentsInterpreter::interpret(XmlLine* xmlLine
   const std::string& input = xmlLine->input();
   size_t start = xmlLine->getCurrIndex();
 
+  std::cout << "interpret contents: " << input[start] << " start: " << start << std::endl;
+
   if (input[start] == '<')
     return TagInterpreter::IGNORED;
 
