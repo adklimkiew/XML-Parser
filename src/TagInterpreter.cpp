@@ -1,13 +1,11 @@
 #include "TagInterpreter.hpp"
 #include "XmlLine.hpp"
 #include "Attribute.hpp"
-#include "IResult.hpp"
-#include "Data.hpp"
 #include "XmlValidation.hpp"
 
 #include <iostream>
 
-bool TagInterpreter::extractTagAndAttributes(const XmlLine* xmlLine, std::string& tag)
+bool TagInterpreter::extractTagAndAttributes(const XmlLine* xmlLine, std::string& tag, std::vector<Attribute*>& attributes)
 {
   const std::string& input = xmlLine->input();
   size_t start = xmlLine->getCurrIndex();
@@ -18,20 +16,15 @@ bool TagInterpreter::extractTagAndAttributes(const XmlLine* xmlLine, std::string
 
   std::cout << "extractTagAndAttributes: tag to push:" << tag << "| pos:" << pos << " start:" << start << std::endl;
 
-  std::vector<Attribute*> attributes;
-
-  if(!TagInterpreter::extractAttributes(input, pos, attributes))
+  if(!extractAttributes(input, pos, attributes))
     return false;
-
-//  if (attributes.size() > 0)
-    result()->add(new Data(tag, attributes));
 
   std::cout << "extractAttributes: attributes.size:" << attributes.size() << std::endl;
 
   return true;
 }
 
-bool TagInterpreter::extractAttributes(const std::string& input, size_t& pos, std::vector<Attribute*>& results)
+bool TagInterpreter::extractAttributes(const std::string& input, size_t& pos, std::vector<Attribute*>& attributes)
 {
   while (pos != std::string::npos)
   {
@@ -39,13 +32,13 @@ bool TagInterpreter::extractAttributes(const std::string& input, size_t& pos, st
     if (pos == std::string::npos)
       break;
 
-    if (!extractAttribute(input, pos, results))
+    if (!extractAttribute(input, pos, attributes))
       return false;
   }
   return true;
 }
 
-bool TagInterpreter::extractAttribute(const std::string& input, size_t& pos, std::vector<Attribute*>& results)
+bool TagInterpreter::extractAttribute(const std::string& input, size_t& pos, std::vector<Attribute*>& attributes)
 {
   size_t index = pos-1;
   std::cout << pos << " " << input[pos] << std::endl;
@@ -76,7 +69,7 @@ bool TagInterpreter::extractAttribute(const std::string& input, size_t& pos, std
 
   pos = end+1;
 
-  results.push_back(new Attribute(attrName, attrValue));
+  attributes.push_back(new Attribute(attrName, attrValue));
 
   return true;
 }

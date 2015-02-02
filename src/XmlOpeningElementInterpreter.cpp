@@ -1,6 +1,8 @@
 #include "XmlOpeningElementInterpreter.hpp"
 #include "XmlValidation.hpp"
+#include "IResult.hpp"
 #include "XmlLine.hpp"
+#include "Data.hpp"
 
 #include <string>
 #include <iostream>
@@ -23,9 +25,11 @@ TagInterpreter::RESULT XmlOpeningElementInterpreter::interpret(XmlLine* xmlLine)
     return TagInterpreter::IGNORED;
 
   std::string tag;
-  if (!extractTagAndAttributes(xmlLine, tag))
+  std::vector<Attribute*> attributes;
+  if (!extractTagAndAttributes(xmlLine, tag, attributes))
     return TagInterpreter::ERROR;
 
+  result()->add(new Data(tag, attributes));
   validation()->push(tag);
 
   xmlLine->setCurrIndex(pos+1);

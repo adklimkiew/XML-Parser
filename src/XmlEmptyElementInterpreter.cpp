@@ -1,6 +1,8 @@
 #include "XmlEmptyElementInterpreter.hpp"
 #include "XmlValidation.hpp"
+#include "IResult.hpp"
 #include "XmlLine.hpp"
+#include "Data.hpp"
 
 #include <string>
 #include <iostream>
@@ -18,9 +20,12 @@ TagInterpreter::RESULT XmlEmptyElementInterpreter::interpret(XmlLine* xmlLine)
     if (input[pos-1] != '/') // this is not empty element...
       return TagInterpreter::IGNORED;
 
-    std::string tag; // <- not needed in fact... - tbd
-    if(!extractTagAndAttributes(xmlLine, tag))
+    std::string tag;
+    std::vector<Attribute*> attributes;
+    if(!extractTagAndAttributes(xmlLine, tag, attributes))
       return TagInterpreter::ERROR;
+
+    result()->add(new Data(tag, attributes));
 
     std::cout << "Empty elem interpret extracted tag: " << tag << std::endl;
 
