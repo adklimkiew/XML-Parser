@@ -31,6 +31,12 @@ TagInterpreter::RESULT XmlOpeningElementInterpreter::interpret(XmlLine* xmlLine)
 
   result()->add(new Data(tag, attributes));
   validation()->push(tag);
+  
+  if (!validation()->validateRootElement())
+  {
+    std::cout << "XmlOpeningElementInterpreter::more than one root element!" << std::endl;
+    return TagInterpreter::ERROR;
+  }
 
   xmlLine->setCurrIndex(pos+1);
   return TagInterpreter::SUCCESS;

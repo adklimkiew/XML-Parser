@@ -32,6 +32,12 @@ TagInterpreter::RESULT XmlElementContentsInterpreter::interpret(XmlLine* xmlLine
     len = pos-start;
   }
 
+  if (!validation()->validateContentsProperlyNested())
+  {
+    std::cout << "XmlElementContentsInterpreter:: contents not properly nested!" << std::endl;
+    return TagInterpreter::ERROR;
+  }
+
   std::string contents = input.substr(start, len);
   result()->getLast()->update(contents);
 
