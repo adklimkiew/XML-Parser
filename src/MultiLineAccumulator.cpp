@@ -10,10 +10,9 @@ void MultiLineAccumulator::tryToMerge(const std::string& str)
 
   if (_mergeInProgress)
   {
-    if(_mergedString.empty())
-      _mergedString += str;
-    else
-      _mergedString += " " + str;
+    if(!_mergedString.empty())
+      _mergedString += " ";
+    _mergedString += str;
   }
 
   if(pos != std::string::npos && _mergeInProgress)
