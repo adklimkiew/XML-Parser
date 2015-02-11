@@ -25,6 +25,9 @@ public:
       delete _attributes[i];
   }
 
+  const std::string& getTag() const { return _tag; }
+  const std::string& getContents() const { return _contents; }
+  const std::vector<Attribute*>& getAttributes() const { return _attributes; }
   void update(const std::string& contents) { _contents = contents; }
  
   void print() const {

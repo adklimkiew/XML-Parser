@@ -10,16 +10,18 @@ LIB_OBJECTS = $(addprefix $(ODIR)/, *.o)
 SOURCES = $(wildcard *.cpp)
 OBJECTS = $(SOURCES:.cpp=.o)
 
+all: $(EXECUTABLE)
+
 $(EXECUTABLE): $(LIB_OBJECTS) $(OBJECTS)
 	$(CC) $(LDFLAGS) $^ -o $@
 
 
 $(LIB_OBJECTS):
-	cd ../src && $(MAKE)
+	cd ../src && $(MAKE) all
 
-%.o: %.cpp #$(DEPS)
+DEPS := $(wildcard $(IDIR)/*.hpp)
+%.o: %.cpp $(DEPS)
 	$(CC) $(CFLAGS) $< -o $@
-
 
 
 .PHONY: clean

@@ -13,7 +13,7 @@ public:
     if (_stack.empty() && _rootElementFound == false)
       _rootElementFound = true;
     else if (_stack.empty() && _rootElementFound)
-      _singleRootElement = false;      
+      _singleRootElement = false;
     _stack.push(element);
     _contentsAllowed = true;
   }

@@ -19,6 +19,7 @@ public:
     return 0;  
   }
   void print() const;
+  std::vector<Data*> find(const std::string& tag);
 
 private:
   std::vector<Data*> _results;
