@@ -1,12 +1,12 @@
 #ifndef XML_ELEMENT_CONTENTS_HPP
 #define XML_ELEMENT_CONTENTS_HPP
 
-#include "TagInterpreter.hpp"
+#include "XmlElementInterpreter.hpp"
 
-class XmlElementContentsInterpreter : public TagInterpreter
+class XmlElementContentsInterpreter : public XmlElementInterpreter
 {
 public:
-  XmlElementContentsInterpreter(IResult* result, XmlValidation* validation) : TagInterpreter(result, validation) {}
+  XmlElementContentsInterpreter(IResult* result, XmlValidation* validation) : XmlElementInterpreter(result, validation) {}
   RESULT interpret(XmlLine* xmlLine);
 };
 

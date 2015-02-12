@@ -7,7 +7,7 @@
 #include <string>
 #include <iostream>
 
-TagInterpreter::RESULT XmlEmptyElementInterpreter::interpret(XmlLine* xmlLine)
+XmlElementInterpreter::RESULT XmlEmptyElementInterpreter::interpret(XmlLine* xmlLine)
 {
   const std::string& input = xmlLine->input();
   size_t start = xmlLine->getCurrIndex();
@@ -18,19 +18,19 @@ TagInterpreter::RESULT XmlEmptyElementInterpreter::interpret(XmlLine* xmlLine)
     size_t pos = input.find_first_of('>', start);
     std::cout << pos << std::endl;
     if (input[pos-1] != '/') // this is not empty element...
-      return TagInterpreter::IGNORED;
+      return XmlElementInterpreter::IGNORED;
 
     std::string tag;
     std::vector<Attribute*> attributes;
     if(!extractTagAndAttributes(xmlLine, tag, attributes))
-      return TagInterpreter::ERROR;
+      return XmlElementInterpreter::ERROR;
 
     result()->add(new Data(tag, attributes));
 
     std::cout << "Empty elem interpret extracted tag: " << tag << std::endl;
 
     xmlLine->setCurrIndex(pos+1);
-    return TagInterpreter::SUCCESS;
+    return XmlElementInterpreter::SUCCESS;
   }
-  return TagInterpreter::IGNORED;
+  return XmlElementInterpreter::IGNORED;
 }

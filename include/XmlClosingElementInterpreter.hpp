@@ -1,12 +1,12 @@
 #ifndef XML_CLOSING_ELEMENT_HPP
 #define XML_CLOSING_ELEMENT_HPP
 
-#include "TagInterpreter.hpp"
+#include "XmlElementInterpreter.hpp"
 
-class XmlClosingElementInterpreter : public TagInterpreter
+class XmlClosingElementInterpreter : public XmlElementInterpreter
 {
 public:
-  XmlClosingElementInterpreter(IResult* result, XmlValidation* validation) : TagInterpreter(result, validation) {}
+  XmlClosingElementInterpreter(IResult* result, XmlValidation* validation) : XmlElementInterpreter(result, validation) {}
   RESULT interpret(XmlLine* xmlLine);
 };
 

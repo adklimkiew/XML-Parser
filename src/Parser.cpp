@@ -2,7 +2,7 @@
 #include "IResult.hpp"
 #include "Attribute.hpp"
 #include "Data.hpp"
-#include "TagInterpreter.hpp"
+#include "XmlElementInterpreter.hpp"
 #include "MultiLineAccumulator.hpp"
 #include "XmlOpeningElementInterpreter.hpp"
 #include "XmlClosingElementInterpreter.hpp"
@@ -24,7 +24,7 @@ Parser::~Parser()
 
 bool Parser::parse(IResult* result)
 {
-  std::vector<TagInterpreter*> interpreters;
+  std::vector<XmlElementInterpreter*> interpreters;
   prepareInterpreters(interpreters, result);
 
   MultiLineAccumulator accumulator;
@@ -52,7 +52,7 @@ bool Parser::parse(IResult* result)
     {
       for(size_t i=0; i<interpreters.size(); ++i)
       {
-        if (interpreters[i]->interpret(&xmlLine) == TagInterpreter::ERROR)
+        if (interpreters[i]->interpret(&xmlLine) == XmlElementInterpreter::ERROR)
         {
           std::cout << "XML INVALID!" << std::endl;
           return false;
@@ -75,7 +75,7 @@ std::string Parser::trim(const std::string& str)
   return str.substr(start, end-start);
 }
 
-void Parser::prepareInterpreters(std::vector<TagInterpreter*>& interpreters, IResult* result)
+void Parser::prepareInterpreters(std::vector<XmlElementInterpreter*>& interpreters, IResult* result)
 {
   interpreters.push_back(new XmlOpeningElementInterpreter(result, &_validation));
   interpreters.push_back(new XmlElementContentsInterpreter(result, &_validation));
@@ -83,8 +83,8 @@ void Parser::prepareInterpreters(std::vector<TagInterpreter*>& interpreters, IRe
   interpreters.push_back(new XmlEmptyElementInterpreter(result, &_validation));
 }
 
-void Parser::deleteInterpreters(std::vector<TagInterpreter*>& interpreters) const
+void Parser::deleteInterpreters(std::vector<XmlElementInterpreter*>& interpreters) const
 {
-  for (std::vector<TagInterpreter*>::iterator it = interpreters.begin(); it != interpreters.end(); ++it)
+  for (std::vector<XmlElementInterpreter*>::iterator it = interpreters.begin(); it != interpreters.end(); ++it)
     delete *it;
 }

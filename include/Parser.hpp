@@ -10,7 +10,7 @@
 
 class IResult;
 class Attribute;
-class TagInterpreter;
+class XmlElementInterpreter;
 
 class Parser
 {
@@ -22,8 +22,8 @@ public:
 
 private:
   std::string trim(const std::string& str);
-  void prepareInterpreters(std::vector<TagInterpreter*>& interpreters, IResult* result);
-  void deleteInterpreters(std::vector<TagInterpreter*>& interpreters) const;
+  void prepareInterpreters(std::vector<XmlElementInterpreter*>& interpreters, IResult* result);
+  void deleteInterpreters(std::vector<XmlElementInterpreter*>& interpreters) const;
 
 private:
   std::fstream _fstream;

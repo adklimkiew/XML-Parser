@@ -4,7 +4,6 @@
 
 #include <cassert>
 
-
 void test_example_xml()
 {
   Parser p("../xml_files/example.xml");
@@ -138,6 +137,13 @@ int main()
 {
   test_example_xml();
 
+/*
+  Parser p2("../xml_files/menu.xml");
+  IResult* r = new VResult;
+  p2.parse(r);
+  r->print();
+  delete r;
+*/
 
 /*
   Parser p2("../xml_files/example.xml");

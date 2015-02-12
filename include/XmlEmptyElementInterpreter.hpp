@@ -1,12 +1,12 @@
 #ifndef XML_EMPTY_ELEMENT_HPP
 #define XML_EMPTY_ELEMENT_HPP
 
-#include "TagInterpreter.hpp"
+#include "XmlElementInterpreter.hpp"
 
-class XmlEmptyElementInterpreter : public TagInterpreter
+class XmlEmptyElementInterpreter : public XmlElementInterpreter
 {
 public:
-  XmlEmptyElementInterpreter(IResult* result, XmlValidation* validation) : TagInterpreter(result, validation) {}
+  XmlEmptyElementInterpreter(IResult* result, XmlValidation* validation) : XmlElementInterpreter(result, validation) {}
   RESULT interpret(XmlLine* xmlLine);
 };
 

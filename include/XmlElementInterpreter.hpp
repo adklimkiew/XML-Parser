@@ -1,5 +1,5 @@
-#ifndef TAG_INTERPRETER_HPP
-#define TAG_INTERPRETER_HPP
+#ifndef XML_ELEMENT_INTERPRETER_HPP
+#define XML_ELEMENT_INTERPRETER_HPP
 
 #include <vector>
 #include <string>
@@ -9,13 +9,13 @@ class XmlValidation;
 class XmlLine;
 class Attribute;
 
-class TagInterpreter
+class XmlElementInterpreter
 {
 public:
-  TagInterpreter(IResult* result, XmlValidation* validation) :
+  XmlElementInterpreter(IResult* result, XmlValidation* validation) :
     _result(result), _validation(validation) {}
 
-  virtual ~TagInterpreter() {}
+  virtual ~XmlElementInterpreter() {}
 
   enum RESULT {SUCCESS, IGNORED, ERROR};
 

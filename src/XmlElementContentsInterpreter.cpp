@@ -7,7 +7,7 @@
 #include <string>
 #include <iostream>
 
-TagInterpreter::RESULT XmlElementContentsInterpreter::interpret(XmlLine* xmlLine)
+XmlElementInterpreter::RESULT XmlElementContentsInterpreter::interpret(XmlLine* xmlLine)
 {
   const std::string& input = xmlLine->input();
   size_t start = xmlLine->getCurrIndex();
@@ -15,7 +15,7 @@ TagInterpreter::RESULT XmlElementContentsInterpreter::interpret(XmlLine* xmlLine
   std::cout << "interpret contents: " << input[start] << " start: " << start << std::endl;
 
   if (input[start] == '<')
-    return TagInterpreter::IGNORED;
+    return XmlElementInterpreter::IGNORED;
 
   size_t index = 0;
   size_t len = 0;
@@ -35,7 +35,7 @@ TagInterpreter::RESULT XmlElementContentsInterpreter::interpret(XmlLine* xmlLine
   if (!validation()->validateContentsProperlyNested())
   {
     std::cout << "XmlElementContentsInterpreter:: contents not properly nested!" << std::endl;
-    return TagInterpreter::ERROR;
+    return XmlElementInterpreter::ERROR;
   }
 
   std::string contents = input.substr(start, len);
@@ -44,5 +44,5 @@ TagInterpreter::RESULT XmlElementContentsInterpreter::interpret(XmlLine* xmlLine
   xmlLine->setCurrIndex(index);
   std::cout << "interpret contents:" << contents << "|" << (xmlLine->isAtEnd() ? "end" : "not at end") << std::endl;
 
-  return TagInterpreter::SUCCESS;
+  return XmlElementInterpreter::SUCCESS;
 }
