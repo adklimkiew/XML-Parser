@@ -9,19 +9,7 @@
 
 XmlElementInterpreter::RESULT XmlOpeningElementInterpreter::interpret(XmlLine* xmlLine)
 {
-  const std::string& input = xmlLine->input();
-  size_t start = xmlLine->getCurrIndex();
-  std::cout << "Open interpret:" << input << "---" << input.length() << " " << start << std::endl;
-
-  if (input[start] != '<' || input[start+1] == '/')
-    return XmlElementInterpreter::IGNORED;
-
-  size_t pos = input.find_first_of('>', start);
-  if (pos == std::string::npos)
-    return XmlElementInterpreter::IGNORED;
-
-  std::cout << pos << std::endl;
-  if (input[pos-1] == '/')
+  if(!elementMatches(xmlLine))
     return XmlElementInterpreter::IGNORED;
 
   std::string tag;
@@ -38,6 +26,26 @@ XmlElementInterpreter::RESULT XmlOpeningElementInterpreter::interpret(XmlLine* x
     return XmlElementInterpreter::ERROR;
   }
 
-  xmlLine->setCurrIndex(pos+1);
+  xmlLine->setCurrIndex(_pos+1);
   return XmlElementInterpreter::SUCCESS;
+}
+
+bool XmlOpeningElementInterpreter::elementMatches(XmlLine* xmlLine)
+{
+  const std::string& input = xmlLine->input();
+  size_t start = xmlLine->getCurrIndex();
+  std::cout << "Open interpret:" << input << "---" << input.length() << " " << start << std::endl;
+
+  if (input[start] != '<' || input[start+1] == '/')
+    return false;
+
+  _pos = input.find_first_of('>', start);
+  if (_pos == std::string::npos)
+    return false;
+
+  std::cout << _pos << std::endl;
+  if (input[_pos-1] == '/')
+    return false;
+
+  return true;
 }

@@ -22,6 +22,8 @@ public:
   virtual RESULT interpret(XmlLine* xmlLine) = 0;
 
 protected:
+  virtual bool elementMatches(XmlLine* xmlLine) { return false; } // TMP!!!
+
   IResult* result() { return _result; }
   XmlValidation* validation() { return _validation; }
 
