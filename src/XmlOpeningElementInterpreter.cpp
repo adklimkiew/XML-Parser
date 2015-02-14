@@ -9,7 +9,7 @@
 
 XmlElementInterpreter::RESULT XmlOpeningElementInterpreter::interpret(XmlLine* xmlLine)
 {
-  if(!elementMatches(xmlLine))
+  if (!elementMatches(xmlLine))
     return XmlElementInterpreter::IGNORED;
 
   std::string tag;

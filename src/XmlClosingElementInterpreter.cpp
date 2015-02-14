@@ -7,14 +7,14 @@
 
 XmlElementInterpreter::RESULT XmlClosingElementInterpreter::interpret(XmlLine* xmlLine)
 {
+  if (!elementMatches(xmlLine))
+    return XmlElementInterpreter::IGNORED;
+
   const std::string& input = xmlLine->input();
   size_t start = xmlLine->getCurrIndex();
 
   std::cout << "interpret closing element: input=" << input << " start:" << start << std::endl;
   std::cout << input[start] << " " << input[start+1] << std::endl;
-
-  if(!elementMatches(xmlLine))
-    return XmlElementInterpreter::IGNORED;
 
   size_t pos = input.find_first_of('>', start+2); // pos == npos ?? TBD...
   std::string tag = input.substr(start+2, pos-1-start-1);

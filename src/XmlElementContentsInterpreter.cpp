@@ -9,13 +9,11 @@
 
 XmlElementInterpreter::RESULT XmlElementContentsInterpreter::interpret(XmlLine* xmlLine)
 {
+  if (!elementMatches(xmlLine))
+    return XmlElementInterpreter::IGNORED;
+
   const std::string& input = xmlLine->input();
   size_t start = xmlLine->getCurrIndex();
-
-  std::cout << "interpret contents: " << input[start] << " start: " << start << std::endl;
-
-  if (input[start] == '<')
-    return XmlElementInterpreter::IGNORED;
 
   size_t index = 0;
   size_t len = 0;
@@ -45,4 +43,17 @@ XmlElementInterpreter::RESULT XmlElementContentsInterpreter::interpret(XmlLine* 
   std::cout << "interpret contents:" << contents << "|" << (xmlLine->isAtEnd() ? "end" : "not at end") << std::endl;
 
   return XmlElementInterpreter::SUCCESS;
+}
+
+bool XmlElementContentsInterpreter::elementMatches(XmlLine* xmlLine)
+{
+  const std::string& input = xmlLine->input();
+  size_t start = xmlLine->getCurrIndex();
+
+  std::cout << "interpret contents: " << input[start] << " start: " << start << std::endl;
+
+  if (input[start] == '<')
+    return false;
+
+  return true;
 }
