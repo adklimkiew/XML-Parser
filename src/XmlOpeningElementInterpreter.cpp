@@ -7,11 +7,6 @@
 #include <string>
 #include <iostream>
 
-XmlElementInterpreter::RESULT XmlOpeningElementInterpreter::interpret(XmlLine* xmlLine)
-{
-  return interpret_template_method(xmlLine);
-}
-
 bool XmlOpeningElementInterpreter::elementMatches(XmlLine* xmlLine)
 {
   const std::string& input = xmlLine->input();

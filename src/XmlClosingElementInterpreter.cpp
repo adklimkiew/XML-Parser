@@ -5,11 +5,6 @@
 #include <string>
 #include <iostream>
 
-XmlElementInterpreter::RESULT XmlClosingElementInterpreter::interpret(XmlLine* xmlLine)
-{
-  return interpret_template_method(xmlLine);
-}
-
 bool XmlClosingElementInterpreter::elementMatches(XmlLine* xmlLine)
 {
   const std::string& input = xmlLine->input();

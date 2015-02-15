@@ -21,13 +21,11 @@ public:
 
   enum RESULT {SUCCESS, IGNORED, ERROR};
 
-  RESULT interpret_template_method(XmlLine* xmlLine);
-
-  virtual RESULT interpret(XmlLine* xmlLine) = 0;
+  RESULT interpret(XmlLine* xmlLine);
 
 protected:
   virtual bool elementMatches(XmlLine* xmlLine) = 0;
-  virtual bool preValidate() const { return true; }
+  virtual bool preValidate() { return true; }
   virtual Data* prepareData() const { return new Data(); }
   virtual bool extractData(const XmlLine* xmlLine, Data* data) const { return true; } // TBD!!!! = 0;
   virtual bool postValidate(Data* data) { return false; } //TDB!!!! pure virtual!!!

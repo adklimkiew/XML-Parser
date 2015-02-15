@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-XmlElementInterpreter::RESULT XmlElementInterpreter::interpret_template_method(XmlLine* xmlLine)
+XmlElementInterpreter::RESULT XmlElementInterpreter::interpret(XmlLine* xmlLine)
 {
   if (!elementMatches(xmlLine))
     return XmlElementInterpreter::IGNORED;

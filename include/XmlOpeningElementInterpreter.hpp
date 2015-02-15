@@ -7,7 +7,6 @@ class XmlOpeningElementInterpreter : public XmlElementInterpreter
 {
 public:
   XmlOpeningElementInterpreter(IResult* result, XmlValidation* validation) : XmlElementInterpreter(result, validation), _pos(0) {}
-  XmlElementInterpreter::RESULT interpret(XmlLine* xmlLine);
 
 protected:
   bool elementMatches(XmlLine* xmlLine);

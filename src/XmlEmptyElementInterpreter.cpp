@@ -7,24 +7,6 @@
 #include <string>
 #include <iostream>
 
-XmlElementInterpreter::RESULT XmlEmptyElementInterpreter::interpret(XmlLine* xmlLine)
-{
-  if (!elementMatches(xmlLine))
-    return XmlElementInterpreter::IGNORED;
-
-  std::string tag;
-  std::vector<Attribute*> attributes;
-  if(!extractTagAndAttributes(xmlLine, tag, attributes))
-    return XmlElementInterpreter::ERROR;
-
-  result()->add(new Data(tag, attributes));
-
-  std::cout << "Empty elem interpret extracted tag: " << tag << std::endl;
-
-  xmlLine->setCurrIndex(_pos+1);
-  return XmlElementInterpreter::SUCCESS;
-}
-
 bool XmlEmptyElementInterpreter::elementMatches(XmlLine* xmlLine)
 {
   const std::string& input = xmlLine->input();
@@ -41,4 +23,22 @@ bool XmlEmptyElementInterpreter::elementMatches(XmlLine* xmlLine)
     return false;
 
   return true;
+}
+
+bool XmlEmptyElementInterpreter::extractData(const XmlLine* xmlLine, Data* data) const
+{
+  std::string tag;
+  std::vector<Attribute*> attributes;
+  if (!extractTagAndAttributes(xmlLine, tag, attributes))
+    return false;
+
+  data->setTag(tag);
+  data->setAttributes(attributes);
+
+  return true;
+}
+
+void XmlEmptyElementInterpreter::update(XmlLine* xmlLine)
+{
+  xmlLine->setCurrIndex(_pos+1);
 }

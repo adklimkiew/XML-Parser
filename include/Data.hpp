@@ -11,17 +11,6 @@ class Data
 {
 public:
   Data() {}
-
-  Data(const std::string& tag, const std::string& contents) :
-    _contents(contents), _tag(tag) {}
-  
-  Data(const std::string& tag, const std::vector<Attribute*>& attributes) :
-    _tag(tag)
-  {
-    _attributes.reserve(attributes.size());
-    std::copy(attributes.begin(), attributes.end(), std::back_inserter(_attributes));
-  }
-
   ~Data() {
     for (size_t i=0; i<_attributes.size(); ++i)
       delete _attributes[i];
@@ -37,7 +26,6 @@ public:
   const std::string& getTag() const { return _tag; }
   const std::string& getContents() const { return _contents; }
   const std::vector<Attribute*>& getAttributes() const { return _attributes; }
-  void update(const std::string& contents) { _contents = contents; }
  
   void print() const {
     std::cout << _tag << ": ";
