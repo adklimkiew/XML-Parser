@@ -27,8 +27,8 @@ protected:
   virtual bool elementMatches(XmlLine* xmlLine) = 0;
   virtual bool preValidate() { return true; }
   virtual Data* prepareData() const { return new Data(); }
-  virtual bool extractData(const XmlLine* xmlLine, Data* data) const { return true; } // TBD!!!! = 0;
-  virtual bool postValidate(Data* data) { return false; } //TDB!!!! pure virtual!!!
+  virtual bool extractData(const XmlLine* xmlLine, Data* data) const = 0;
+  virtual bool postValidate(Data* data) = 0;
   virtual void store(Data* data) { result()->add(data); }
   virtual void update(XmlLine* xmlLine) {}
   virtual void cleanup() {}
