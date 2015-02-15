@@ -7,33 +7,7 @@
 
 XmlElementInterpreter::RESULT XmlClosingElementInterpreter::interpret(XmlLine* xmlLine)
 {
-  if (!elementMatches(xmlLine))
-    return XmlElementInterpreter::IGNORED;
-
-  const std::string& input = xmlLine->input();
-  size_t start = xmlLine->getCurrIndex();
-
-  std::cout << "interpret closing element: input=" << input << " start:" << start << std::endl;
-  std::cout << input[start] << " " << input[start+1] << std::endl;
-
-  size_t pos = input.find_first_of('>', start+2); // pos == npos ?? TBD...
-  std::string tag = input.substr(start+2, pos-1-start-1);
-  if (pos == input.length()-1)
-    start = input.length();
-  else
-    start = pos+1;
-  std::cout << "XmlClosingElementInterpreter::interpret tag:" << tag << "|" << std::endl;
-
-  if (!validation()->validate(tag))
-  {
-    std::cout << "XmlClosingElementInterpreter::interpret validation failed tag :" << tag << " onTop:" << validation()->top() << std::endl;
-    return XmlElementInterpreter::ERROR;
-  }
-    
-  validation()->pop();
-
-  xmlLine->setCurrIndex(pos+1);
-  return XmlElementInterpreter::SUCCESS;
+  return interpret_template_method(xmlLine);
 }
 
 bool XmlClosingElementInterpreter::elementMatches(XmlLine* xmlLine)
@@ -45,4 +19,42 @@ bool XmlClosingElementInterpreter::elementMatches(XmlLine* xmlLine)
     return true;
 
   return false;
+}
+
+bool XmlClosingElementInterpreter::extractData(const XmlLine* xmlLine, Data* data) const
+{
+  const std::string& input = xmlLine->input();
+  size_t start = xmlLine->getCurrIndex();
+
+  std::cout << "interpret closing element: input=" << input << " start:" << start << std::endl;
+  std::cout << input[start] << " " << input[start+1] << std::endl;
+
+  const_cast<size_t&>(_pos) = input.find_first_of('>', start+2); // pos == npos ?? TBD...
+  std::string tag = input.substr(start+2, _pos-1-start-1);
+
+  data->setTag(tag);
+
+  return true;
+}
+
+bool XmlClosingElementInterpreter::postValidate(Data* data)
+{
+  if (!validation()->validate(data->getTag()))
+  {
+    std::cout << "XmlClosingElementInterpreter::interpret validation failed tag :" << data->getTag() << " onTop:" << validation()->top() << std::endl;
+    return false;
+  }
+    
+  validation()->pop();
+  return true;
+}
+
+void XmlClosingElementInterpreter::store(Data* data)
+{
+  delete data;
+}
+
+void XmlClosingElementInterpreter::update(XmlLine* xmlLine)
+{
+  xmlLine->setCurrIndex(_pos+1);
 }
