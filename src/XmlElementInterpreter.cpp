@@ -5,7 +5,30 @@
 
 #include <iostream>
 
-bool XmlElementInterpreter::extractTagAndAttributes(const XmlLine* xmlLine, std::string& tag, std::vector<Attribute*>& attributes)
+XmlElementInterpreter::RESULT XmlElementInterpreter::interpret_template_method(XmlLine* xmlLine)
+{
+  if (!elementMatches(xmlLine))
+    return XmlElementInterpreter::IGNORED;
+
+  if (!preValidate())
+    return XmlElementInterpreter::ERROR;
+
+  Data* data = prepareData();
+
+  if (!extractData(xmlLine, data))
+    return XmlElementInterpreter::ERROR;
+
+  if (!postValidate(data))
+    return XmlElementInterpreter::ERROR;
+
+  store(data);
+  update(xmlLine);
+  cleanup();
+
+  return XmlElementInterpreter::SUCCESS;
+}
+
+bool XmlElementInterpreter::extractTagAndAttributes(const XmlLine* xmlLine, std::string& tag, std::vector<Attribute*>& attributes) const
 {
   const std::string& input = xmlLine->input();
   size_t start = xmlLine->getCurrIndex();
@@ -24,7 +47,7 @@ bool XmlElementInterpreter::extractTagAndAttributes(const XmlLine* xmlLine, std:
   return true;
 }
 
-bool XmlElementInterpreter::extractAttributes(const std::string& input, size_t& pos, std::vector<Attribute*>& attributes)
+bool XmlElementInterpreter::extractAttributes(const std::string& input, size_t& pos, std::vector<Attribute*>& attributes) const
 {
   while (pos != std::string::npos)
   {
@@ -38,7 +61,7 @@ bool XmlElementInterpreter::extractAttributes(const std::string& input, size_t& 
   return true;
 }
 
-bool XmlElementInterpreter::extractAttribute(const std::string& input, size_t& pos, std::vector<Attribute*>& attributes)
+bool XmlElementInterpreter::extractAttribute(const std::string& input, size_t& pos, std::vector<Attribute*>& attributes) const
 {
   size_t index = pos-1;
   std::cout << pos << " " << input[pos] << std::endl;

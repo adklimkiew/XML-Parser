@@ -9,25 +9,38 @@
 
 XmlElementInterpreter::RESULT XmlOpeningElementInterpreter::interpret(XmlLine* xmlLine)
 {
-  if (!elementMatches(xmlLine))
-    return XmlElementInterpreter::IGNORED;
+  return interpret_template_method(xmlLine);
+}
 
+void XmlOpeningElementInterpreter::update(XmlLine* xmlLine)
+{
+  xmlLine->setCurrIndex(_pos+1);
+}
+
+bool XmlOpeningElementInterpreter::extractData(const XmlLine* xmlLine, Data* data) const
+{
   std::string tag;
   std::vector<Attribute*> attributes;
   if (!extractTagAndAttributes(xmlLine, tag, attributes))
-    return XmlElementInterpreter::ERROR;
+    return false;
 
-  result()->add(new Data(tag, attributes));
-  validation()->push(tag);
+  data->setTag(tag);
+  data->setAttributes(attributes);
+
+  return true;
+}
+
+bool XmlOpeningElementInterpreter::postValidate(Data* data)
+{
+  validation()->push(data->getTag());
   
   if (!validation()->validateRootElement())
   {
     std::cout << "XmlOpeningElementInterpreter::more than one root element!" << std::endl;
-    return XmlElementInterpreter::ERROR;
+    return false;
   }
 
-  xmlLine->setCurrIndex(_pos+1);
-  return XmlElementInterpreter::SUCCESS;
+  return true;
 }
 
 bool XmlOpeningElementInterpreter::elementMatches(XmlLine* xmlLine)

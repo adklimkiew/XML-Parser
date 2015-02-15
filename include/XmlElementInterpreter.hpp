@@ -1,10 +1,12 @@
 #ifndef XML_ELEMENT_INTERPRETER_HPP
 #define XML_ELEMENT_INTERPRETER_HPP
 
+#include "Data.hpp"
+#include "IResult.hpp"
+
 #include <vector>
 #include <string>
 
-class IResult;
 class XmlValidation;
 class XmlLine;
 class Attribute;
@@ -19,19 +21,28 @@ public:
 
   enum RESULT {SUCCESS, IGNORED, ERROR};
 
+  RESULT interpret_template_method(XmlLine* xmlLine);
+
   virtual RESULT interpret(XmlLine* xmlLine) = 0;
 
 protected:
   virtual bool elementMatches(XmlLine* xmlLine) = 0;
+  virtual bool preValidate() const { return true; }
+  virtual Data* prepareData() const { return new Data(); }
+  virtual bool extractData(const XmlLine* xmlLine, Data* data) const { return true; } // TBD!!!! = 0;
+  virtual bool postValidate(Data* data) { return false; } //TDB!!!! pure virtual!!!
+  virtual void store(Data* data) { result()->add(data); }
+  virtual void update(XmlLine* xmlLine) {}
+  virtual void cleanup() {}
 
   IResult* result() { return _result; }
   XmlValidation* validation() { return _validation; }
 
-  bool extractTagAndAttributes(const XmlLine* xmlLine, std::string& tag, std::vector<Attribute*>& attributes);
+  bool extractTagAndAttributes(const XmlLine* xmlLine, std::string& tag, std::vector<Attribute*>& attributes) const;
 
 private:
-  bool extractAttributes(const std::string& input, size_t& pos, std::vector<Attribute*>& attributes);
-  bool extractAttribute(std::string const& input, size_t& pos, std::vector<Attribute*>& attributes);
+  bool extractAttributes(const std::string& input, size_t& pos, std::vector<Attribute*>& attributes) const;
+  bool extractAttribute(std::string const& input, size_t& pos, std::vector<Attribute*>& attributes) const;
 
   IResult* _result;
   XmlValidation* _validation;

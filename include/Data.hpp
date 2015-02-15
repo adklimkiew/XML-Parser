@@ -10,6 +10,8 @@
 class Data
 {
 public:
+  Data() {}
+
   Data(const std::string& tag, const std::string& contents) :
     _contents(contents), _tag(tag) {}
   
@@ -23,6 +25,13 @@ public:
   ~Data() {
     for (size_t i=0; i<_attributes.size(); ++i)
       delete _attributes[i];
+  }
+
+  void setTag(const std::string& tag) { _tag = tag; }
+  void setContents(const std::string& contents) { _contents = contents; }
+  void setAttributes(const std::vector<Attribute*>& attributes) {
+    _attributes.reserve(attributes.size());
+    std::copy(attributes.begin(), attributes.end(), std::back_inserter(_attributes));
   }
 
   const std::string& getTag() const { return _tag; }
