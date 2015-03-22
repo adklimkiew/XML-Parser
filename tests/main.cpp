@@ -11,6 +11,8 @@ void test_example_xml()
   p.parse(r);
   r->print();
 
+  assert(r->size() == 21);
+
   std::vector<Data*> data;
   std::vector<Attribute*> attributes;
 
@@ -128,7 +130,6 @@ void test_example_xml()
   assert(data.size() == 1);
   assert(data[0]->getContents() == "surprise");
   assert(data[0]->getAttributes().size() == 0);
-
 
   delete r;
 }

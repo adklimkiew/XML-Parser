@@ -6,6 +6,7 @@
 #include "MultiLineAccumulator.hpp"
 #include "XmlOpeningElementInterpreter.hpp"
 #include "XmlClosingElementInterpreter.hpp"
+#include "XmlCommentElementInterpreter.hpp"
 #include "XmlElementContentsInterpreter.hpp"
 #include "XmlEmptyElementInterpreter.hpp"
 #include "XmlLine.hpp"
@@ -77,6 +78,7 @@ std::string Parser::trim(const std::string& str)
 
 void Parser::prepareInterpreters(std::vector<XmlElementInterpreter*>& interpreters, IResult* result)
 {
+  interpreters.push_back(new XmlCommentElementInterpreter(result, &_validation));
   interpreters.push_back(new XmlOpeningElementInterpreter(result, &_validation));
   interpreters.push_back(new XmlElementContentsInterpreter(result, &_validation));
   interpreters.push_back(new XmlClosingElementInterpreter(result, &_validation));

@@ -17,6 +17,7 @@ public:
   Data* getLast() { return _tree->getCurrent()->data(); }
   
   void print() const { _tree->print(); }
+  size_t size() const { /* TBD... */ return 0; }
 
 private:
   ParseTree* _tree;

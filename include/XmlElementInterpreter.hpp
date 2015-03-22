@@ -40,7 +40,7 @@ protected:
 
 private:
   bool extractAttributes(const std::string& input, size_t& pos, std::vector<Attribute*>& attributes) const;
-  bool extractAttribute(std::string const& input, size_t& pos, std::vector<Attribute*>& attributes) const;
+  bool extractAttribute(const std::string& input, size_t& pos, std::vector<Attribute*>& attributes) const;
 
   IResult* _result;
   XmlValidation* _validation;

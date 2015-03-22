@@ -15,14 +15,12 @@ all: $(EXECUTABLE)
 $(EXECUTABLE): $(LIB_OBJECTS) $(OBJECTS)
 	$(CC) $(LDFLAGS) $^ -o $@
 
-
 $(LIB_OBJECTS):
 	cd ../src && $(MAKE) all
 
 DEPS := $(wildcard $(IDIR)/*.hpp)
 %.o: %.cpp $(DEPS)
 	$(CC) $(CFLAGS) $< -o $@
-
 
 .PHONY: clean
 clean:

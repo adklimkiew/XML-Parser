@@ -3,6 +3,7 @@
     <hard test="unit"
       architecture="linux64"
     />
+    <!-- comment -->
     <even_harder test="integration"
       architecture="win32"
     >hidden contents</even_harder>
@@ -25,6 +26,7 @@
     </subnode><oh-dear>There is sth in here...</oh-dear>
    <x size="XXL"><x>Will it work?</x></x>
    <A>
+     <!-- nested comment -->
      surprise
    </A>
   </node>
