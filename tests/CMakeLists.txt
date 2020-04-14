@@ -17,5 +17,4 @@ target_include_directories(
     PRIVATE
     ${CMAKE_SOURCE_DIR}/include)
 
-enable_testing()
 add_test(NAME ${TARGET_NAME} COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${TARGET_NAME})
