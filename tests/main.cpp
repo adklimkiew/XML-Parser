@@ -6,7 +6,7 @@
 
 void test_example_xml()
 {
-  Parser p("./xml_files/example.xml");
+  Parser p("../xml_files/example.xml");
   auto r = new VResult;
   p.parse(r);
   r->print();
