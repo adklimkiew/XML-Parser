@@ -1,7 +1,4 @@
 name: C/C++ CI
-dist: trusty
-sudo: false
-language: cpp
 
 on:
   push:
