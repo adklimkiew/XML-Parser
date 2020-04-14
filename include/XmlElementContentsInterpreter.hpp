@@ -13,8 +13,8 @@ protected:
   bool preValidate();
   Data* prepareData() const;
   bool extractData(const XmlLine* xmlLine, Data* data) const;
-  bool postValidate(Data* data) { return true; }
-  void store(Data* data) {}
+  bool postValidate(Data*) { return true; }
+  void store(Data*) {}
   void update(XmlLine* xmlLine);
 
 private:

@@ -30,7 +30,7 @@ protected:
   virtual bool extractData(const XmlLine* xmlLine, Data* data) const = 0;
   virtual bool postValidate(Data* data) = 0;
   virtual void store(Data* data) { result()->add(data); }
-  virtual void update(XmlLine* xmlLine) {}
+  virtual void update(XmlLine*) {}
   virtual void cleanup() {}
 
   IResult* result() { return _result; }

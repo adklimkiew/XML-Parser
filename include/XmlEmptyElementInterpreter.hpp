@@ -11,7 +11,7 @@ public:
 protected:
   bool elementMatches(XmlLine* xmlLine);
   bool extractData(const XmlLine* xmlLine, Data* data) const;
-  bool postValidate(Data* data) { return true; }
+  bool postValidate(Data*) { return true; }
   void update(XmlLine* xmlLine);
 
 private:
