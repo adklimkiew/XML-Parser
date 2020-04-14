@@ -1,0 +1,20 @@
+SET(CMAKE_CXX_STANDARD 14)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+SET(TARGET_NAME ${PROJECT_NAME}_tests)
+
+file(GLOB TEST_SOURCES *cpp)
+
+add_executable(${TARGET_NAME} ${TEST_SOURCES}) #${CMAKE_SOURCE_DIR}/src/Parser.cpp)
+
+target_link_libraries(
+    ${TARGET_NAME}
+    PRIVATE
+    ${PROJECT_NAME}_lib)
+
+target_include_directories(
+    ${TARGET_NAME}
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/include)
+
+add_test(NAME ${TARGET_NAME} COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${TARGET_NAME})
