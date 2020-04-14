@@ -1,23 +1,21 @@
-name: C/C++ CI
+dist: bionic
+sudo: false
+language: cpp
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-snapshot
+      - doxygen
 
-jobs:
-  build:
+install:
+  - pip install --user conan cmake
 
-    runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+script:
+  - CXX=/usr/bin/gcc-10 CC=/usr/bin/g++-10 cmake -D ENABLE_COVERAGE:BOOL=TRUE . 
+  - cmake --build . -- -j2 
+  - ctest -j2
+  - bash <(curl -s https://codecov.io/bash) -x /usr/bin/gcov-5
