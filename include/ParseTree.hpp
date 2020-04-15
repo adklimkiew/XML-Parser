@@ -8,7 +8,7 @@ class Data;
 class Node
 {
 public:
-  Node(Data* data, Node* next = 0) : _data(data), _parent(0) {} 
+  Node(Data* data) : _data(data), _parent(0) {}
   ~Node() { delete _data; }  
 
   void addChild(Node* child) {
